@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CashView - Crypto Banking</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -178,6 +179,27 @@
             border: 1px solid var(--gray-light);
             position: relative;
             z-index: 1;
+        }
+
+        .balance-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .refresh-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .refresh-btn:hover {
+            color: var(--primary-dark);
+            transform: rotate(180deg);
         }
 
         .nav-menu {
@@ -355,13 +377,6 @@
             text-overflow: ellipsis;
             width: 100%;
             text-align: center;
-        }
-
-        .balance-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
         }
 
         .balance-amount {
@@ -1321,8 +1336,13 @@
                 </div>
 
                 <div class="balance-card">
-                    <div class="balance-amount">₹<span id="current-balance">87,542.50</span></div>
-                    <div class="balance-subtext">Available Balance</div>
+                    <div class="balance-header">
+                        <div class="balance-subtext">Available Balance</div>
+                        <button class="refresh-btn" id="refresh-balance">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                    <div class="balance-amount">₹<span id="current-balance">7,00,000.00</span></div>
                 </div>
 
                 <ul class="nav-menu">
@@ -1336,6 +1356,18 @@
                         <a href="#" class="nav-link" id="transactions-link" data-page="transactions">
                             <i class="fas fa-exchange-alt"></i>
                             <span>Transactions</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" id="deposit-link" data-page="deposit">
+                            <i class="fa fa-rupee"></i>
+                            <span>Deposit</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" id="withdraw-link" data-page="withdraw">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <span>Withdraw</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -1376,7 +1408,7 @@
                     <div class="quick-actions">
                         <a href="#" class="action-btn" id="deposit-btn">
                             <div class="action-icon">
-                                <i class="fas fa-rupee-sign"></i>
+                                <i class="fa fa-rupee"></i>
                             </div>
                             <span>Deposit</span>
                         </a>
@@ -1408,7 +1440,7 @@
                                 <i class="fas fa-chevron-right"></i>
                             </a>
                         </div>
-                        <div class="balance-amount">₹<span id="main-balance">87,542.50</span></div>
+                        <div class="balance-amount">₹<span id="main-balance">7,00,000.00</span></div>
                         <div class="balance-subtext">Current Balance • Savings Account • XXXX-7890</div>
 
                         <div class="balance-stats">
@@ -1485,6 +1517,76 @@
                     </div>
                 </div>
 
+                <!-- Deposit Page -->
+                <div class="page" id="deposit-page">
+                    <h2 class="page-title">Deposit Money</h2>
+                    
+                    <div class="card">
+                        <div class="form-group">
+                            <label class="form-label">From Account</label>
+                            <select class="form-control">
+                                <option>Savings Account (XXXX-7890)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Deposit Method</label>
+                            <select class="form-control" id="deposit-page-method">
+                                <option value="cash">Cash Deposit</option>
+                                <option value="cheque">Cheque Deposit</option>
+                                <option value="transfer">Bank Transfer</option>
+                                <option value="upi">UPI Payment</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Amount (₹)</label>
+                            <div class="input-group">
+                                <i class="fa fa-rupee input-icon"></i>
+                                <input type="number" class="form-control" id="deposit-page-amount" placeholder="Enter amount">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Remarks (Optional)</label>
+                            <input type="text" class="form-control" id="deposit-page-remarks" placeholder="e.g. Salary, Gift, etc.">
+                        </div>
+                        <button class="btn btn-primary" id="deposit-page-submit">Deposit</button>
+                    </div>
+                </div>
+
+                <!-- Withdraw Page -->
+                <div class="page" id="withdraw-page">
+                    <h2 class="page-title">Withdraw Money</h2>
+                    
+                    <div class="card">
+                        <div class="form-group">
+                            <label class="form-label">From Account</label>
+                            <select class="form-control">
+                                <option>Savings Account (XXXX-7890)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Withdrawal Method</label>
+                            <select class="form-control" id="withdraw-page-method">
+                                <option value="atm">ATM Withdrawal</option>
+                                <option value="branch">Branch Withdrawal</option>
+                                <option value="transfer">Bank Transfer</option>
+                                <option value="upi">UPI Payment</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Amount (₹)</label>
+                            <div class="input-group">
+                                <i class="fa fa-rupee input-icon"></i>
+                                <input type="number" class="form-control" id="withdraw-page-amount" placeholder="Enter amount">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Remarks (Optional)</label>
+                            <input type="text" class="form-control" id="withdraw-page-remarks" placeholder="e.g. Shopping, Bills, etc.">
+                        </div>
+                        <button class="btn btn-primary" id="withdraw-page-submit">Withdraw</button>
+                    </div>
+                </div>
+
                 <!-- Transfer Page -->
                 <div class="page" id="transfer-page">
                     <h2 class="page-title">Transfer Money</h2>
@@ -1515,7 +1617,7 @@
                         <div class="form-group">
                             <label class="form-label">Amount (₹)</label>
                             <div class="input-group">
-                                <i class="fas fa-rupee-sign input-icon"></i>
+                                <i class="fa fa-rupee input-icon"></i>
                                 <input type="number" class="form-control" id="transfer-page-amount" placeholder="Enter amount">
                             </div>
                         </div>
@@ -1559,7 +1661,7 @@
                             <div class="form-group">
                                 <label class="form-label">Amount in ₹</label>
                                 <div class="input-group">
-                                    <i class="fas fa-rupee-sign input-icon"></i>
+                                    <i class="fa fa-rupee input-icon"></i>
                                     <input type="number" class="form-control" id="buy-crypto-amount" placeholder="Enter amount">
                                 </div>
                                 <div class="crypto-conversion" id="buy-crypto-conversion">
@@ -1784,139 +1886,6 @@
         </div>
     </div>
 
-    <!-- Deposit Modal -->
-    <div class="modal" id="deposit-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Deposit Money</h3>
-                <button class="close-btn" id="close-deposit">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label class="form-label">From Account</label>
-                    <select class="form-control">
-                        <option>Savings Account (XXXX-7890)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Deposit Method</label>
-                    <select class="form-control" id="deposit-method">
-                        <option value="cash">Cash Deposit</option>
-                        <option value="cheque">Cheque Deposit</option>
-                        <option value="transfer">Bank Transfer</option>
-                        <option value="upi">UPI Payment</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Amount (₹)</label>
-                    <div class="input-group">
-                        <i class="fas fa-rupee-sign input-icon"></i>
-                        <input type="number" class="form-control" id="deposit-amount" placeholder="Enter amount">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Remarks (Optional)</label>
-                    <input type="text" class="form-control" id="deposit-remarks" placeholder="e.g. Salary, Gift, etc.">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-outline" id="cancel-deposit">Cancel</button>
-                <button class="btn btn-primary" id="confirm-deposit">Deposit</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Withdraw Modal -->
-    <div class="modal" id="withdraw-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Withdraw Money</h3>
-                <button class="close-btn" id="close-withdraw">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label class="form-label">From Account</label>
-                    <select class="form-control">
-                        <option>Savings Account (XXXX-7890)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Withdrawal Method</label>
-                    <select class="form-control" id="withdraw-method">
-                        <option value="atm">ATM Withdrawal</option>
-                        <option value="branch">Branch Withdrawal</option>
-                        <option value="transfer">Bank Transfer</option>
-                        <option value="upi">UPI Payment</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Amount (₹)</label>
-                    <div class="input-group">
-                        <i class="fas fa-rupee-sign input-icon"></i>
-                        <input type="number" class="form-control" id="withdraw-amount" placeholder="Enter amount">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Remarks (Optional)</label>
-                    <input type="text" class="form-control" id="withdraw-remarks" placeholder="e.g. Shopping, Bills, etc.">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-outline" id="cancel-withdraw">Cancel</button>
-                <button class="btn btn-primary" id="confirm-withdraw">Withdraw</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Transfer Modal -->
-    <div class="modal" id="transfer-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Transfer Money</h3>
-                <button class="close-btn" id="close-transfer">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label class="form-label">From Account</label>
-                    <select class="form-control">
-                        <option>Savings Account (XXXX-7890)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">To Account</label>
-                    <select class="form-control" id="transfer-type">
-                        <option value="internal">Within CashView Bank</option>
-                        <option value="external">Other Bank (NEFT/IMPS/RTGS)</option>
-                        <option value="upi">UPI Transfer</option>
-                    </select>
-                </div>
-                <div class="form-group" id="account-number-group">
-                    <label class="form-label">Account Number</label>
-                    <input type="text" class="form-control" id="transfer-account" placeholder="Enter account number">
-                </div>
-                <div class="form-group" id="upi-id-group" style="display: none;">
-                    <label class="form-label">UPI ID</label>
-                    <input type="text" class="form-control" id="transfer-upi" placeholder="Enter UPI ID">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Amount (₹)</label>
-                    <div class="input-group">
-                        <i class="fas fa-rupee-sign input-icon"></i>
-                        <input type="number" class="form-control" id="transfer-amount" placeholder="Enter amount">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Remarks (Optional)</label>
-                    <input type="text" class="form-control" id="transfer-remarks" placeholder="e.g. Loan repayment, Gift, etc.">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-outline" id="cancel-transfer">Cancel</button>
-                <button class="btn btn-primary" id="confirm-transfer">Transfer</button>
-            </div>
-        </div>
-    </div>
-
     <!-- Crypto Confirm Modal -->
     <div class="modal crypto-modal" id="crypto-confirm-modal">
         <div class="modal-content">
@@ -1954,7 +1923,7 @@
                 {
                     type: "Savings",
                     number: "XXXX-7890",
-                    balance: 87542.50,
+                    balance: 700000.00,
                     currency: "INR",
                     active: true
                 }
@@ -2124,22 +2093,9 @@
         const withdrawBtn = document.getElementById('withdraw-btn');
         const quickTransferBtn = document.getElementById('quick-transfer-btn');
         const cryptoBtn = document.getElementById('crypto-btn');
-        const depositModal = document.getElementById('deposit-modal');
-        const withdrawModal = document.getElementById('withdraw-modal');
-        const transferModal = document.getElementById('transfer-modal');
         const cryptoConfirmModal = document.getElementById('crypto-confirm-modal');
-        const closeDeposit = document.getElementById('close-deposit');
-        const closeWithdraw = document.getElementById('close-withdraw');
-        const closeTransfer = document.getElementById('close-transfer');
         const closeCryptoConfirm = document.getElementById('close-crypto-confirm');
-        const cancelDeposit = document.getElementById('cancel-deposit');
-        const cancelWithdraw = document.getElementById('cancel-withdraw');
-        const cancelTransfer = document.getElementById('cancel-transfer');
         const cancelCryptoConfirm = document.getElementById('cancel-crypto-confirm');
-        const confirmDeposit = document.getElementById('confirm-deposit');
-        const confirmWithdraw = document.getElementById('confirm-withdraw');
-        const confirmTransfer = document.getElementById('confirm-transfer');
-        const transferPageSubmit = document.getElementById('transfer-page-submit');
         const confirmCryptoTransaction = document.getElementById('confirm-crypto-transaction');
         const currentBalance = document.getElementById('current-balance');
         const mainBalance = document.getElementById('main-balance');
@@ -2182,8 +2138,11 @@
         const dateRangeFilter = document.getElementById('date-range');
         const transactionTypeFilter = document.getElementById('transaction-type');
         const amountRangeFilter = document.getElementById('amount-range');
-        const transferTypeSelect = document.getElementById('transfer-type');
         const transferPageTypeSelect = document.getElementById('transfer-page-type');
+        const depositPageSubmit = document.getElementById('deposit-page-submit');
+        const withdrawPageSubmit = document.getElementById('withdraw-page-submit');
+        const transferPageSubmit = document.getElementById('transfer-page-submit');
+        const refreshBalanceBtn = document.getElementById('refresh-balance');
 
         // State
         let currentPage = 'dashboard';
@@ -2233,43 +2192,33 @@
             
             depositBtn.addEventListener('click', () => {
                 toggleSidebar(false);
-                depositModal.style.display = 'flex';
+                navigateTo('deposit');
             });
             withdrawBtn.addEventListener('click', () => {
                 toggleSidebar(false);
-                withdrawModal.style.display = 'flex';
+                navigateTo('withdraw');
             });
             quickTransferBtn.addEventListener('click', () => {
                 toggleSidebar(false);
-                transferModal.style.display = 'flex';
+                navigateTo('transfer');
             });
             cryptoBtn.addEventListener('click', () => {
                 toggleSidebar(false);
                 navigateTo('crypto');
             });
             
-            closeDeposit.addEventListener('click', () => depositModal.style.display = 'none');
-            closeWithdraw.addEventListener('click', () => withdrawModal.style.display = 'none');
-            closeTransfer.addEventListener('click', () => transferModal.style.display = 'none');
             closeCryptoConfirm.addEventListener('click', () => cryptoConfirmModal.style.display = 'none');
             
-            cancelDeposit.addEventListener('click', () => depositModal.style.display = 'none');
-            cancelWithdraw.addEventListener('click', () => withdrawModal.style.display = 'none');
-            cancelTransfer.addEventListener('click', () => transferModal.style.display = 'none');
             cancelCryptoConfirm.addEventListener('click', () => cryptoConfirmModal.style.display = 'none');
             
             window.addEventListener('click', (e) => {
-                if (e.target === depositModal) depositModal.style.display = 'none';
-                if (e.target === withdrawModal) withdrawModal.style.display = 'none';
-                if (e.target === transferModal) transferModal.style.display = 'none';
                 if (e.target === cryptoConfirmModal) cryptoConfirmModal.style.display = 'none';
             });
             
-            confirmDeposit.addEventListener('click', processDeposit);
-            confirmWithdraw.addEventListener('click', processWithdrawal);
-            confirmTransfer.addEventListener('click', processTransfer);
-            transferPageSubmit.addEventListener('click', processTransferPage);
             confirmCryptoTransaction.addEventListener('click', processCryptoTransaction);
+            depositPageSubmit.addEventListener('click', processDepositPage);
+            withdrawPageSubmit.addEventListener('click', processWithdrawPage);
+            transferPageSubmit.addEventListener('click', processTransferPage);
             
             cryptoTabs.forEach(tab => {
                 tab.addEventListener('click', () => {
@@ -2299,22 +2248,27 @@
             transactionTypeFilter.addEventListener('change', filterTransactions);
             amountRangeFilter.addEventListener('change', filterTransactions);
             
-            transferTypeSelect.addEventListener('change', function() {
-                const type = this.value;
-                document.getElementById('account-number-group').style.display = type === 'upi' ? 'none' : 'block';
-                document.getElementById('upi-id-group').style.display = type === 'upi' ? 'block' : 'none';
-            });
-            
             transferPageTypeSelect.addEventListener('change', function() {
                 const type = this.value;
                 document.getElementById('transfer-page-account-group').style.display = type === 'upi' ? 'none' : 'block';
                 document.getElementById('transfer-page-upi-group').style.display = type === 'upi' ? 'block' : 'none';
             });
             
+            refreshBalanceBtn.addEventListener('click', refreshBalance);
+            
             window.addEventListener('resize', handleResize);
             handleResize();
             
             setInterval(fetchCryptoPrices, 60000);
+        }
+
+        function refreshBalance() {
+            refreshBalanceBtn.classList.add('fa-spin');
+            setTimeout(() => {
+                updateBalances();
+                refreshBalanceBtn.classList.remove('fa-spin');
+                showToast('Balance refreshed');
+            }, 1000);
         }
 
         function loadProfileData() {
@@ -3059,10 +3013,10 @@
             showToast(`Withdrawal of ${amount} ${symbol} initiated`);
         }
 
-        function processDeposit() {
-            const amount = parseFloat(depositAmount.value);
-            const method = document.getElementById('deposit-method').value;
-            const remarks = document.getElementById('deposit-remarks').value;
+        function processDepositPage() {
+            const amount = parseFloat(document.getElementById('deposit-page-amount').value);
+            const method = document.getElementById('deposit-page-method').value;
+            const remarks = document.getElementById('deposit-page-remarks').value;
             
             if (!amount || amount <= 0) {
                 showToast('Please enter a valid amount', 'error');
@@ -3085,16 +3039,16 @@
             updateBalances();
             renderTransactions();
             renderFullTransactions();
-            depositModal.style.display = 'none';
-            depositAmount.value = '';
+            document.getElementById('deposit-page-amount').value = '';
+            document.getElementById('deposit-page-remarks').value = '';
             
             showToast(`₹${amount.toLocaleString('en-IN')} deposited successfully!`);
         }
 
-        function processWithdrawal() {
-            const amount = parseFloat(withdrawAmount.value);
-            const method = document.getElementById('withdraw-method').value;
-            const remarks = document.getElementById('withdraw-remarks').value;
+        function processWithdrawPage() {
+            const amount = parseFloat(document.getElementById('withdraw-page-amount').value);
+            const method = document.getElementById('withdraw-page-method').value;
+            const remarks = document.getElementById('withdraw-page-remarks').value;
             
             if (!amount || amount <= 0) {
                 showToast('Please enter a valid amount', 'error');
@@ -3122,63 +3076,10 @@
             updateBalances();
             renderTransactions();
             renderFullTransactions();
-            withdrawModal.style.display = 'none';
-            withdrawAmount.value = '';
+            document.getElementById('withdraw-page-amount').value = '';
+            document.getElementById('withdraw-page-remarks').value = '';
             
             showToast(`₹${amount.toLocaleString('en-IN')} withdrawn successfully!`);
-        }
-
-        function processTransfer() {
-            const amount = parseFloat(transferAmount.value);
-            const type = document.getElementById('transfer-type').value;
-            const account = document.getElementById('transfer-account').value;
-            const upi = document.getElementById('transfer-upi').value;
-            const remarks = document.getElementById('transfer-remarks').value;
-            
-            if (!amount || amount <= 0) {
-                showToast('Please enter a valid amount', 'error');
-                return;
-            }
-            
-            const activeAccount = userData.accounts.find(account => account.active);
-            if (amount > activeAccount.balance) {
-                showToast('Insufficient funds', 'error');
-                return;
-            }
-            
-            if (type !== 'upi' && !account) {
-                showToast('Please enter recipient account number', 'error');
-                return;
-            }
-            
-            if (type === 'upi' && !upi) {
-                showToast('Please enter UPI ID', 'error');
-                return;
-            }
-            
-            activeAccount.balance -= amount;
-            
-            userData.transactions.unshift({
-                id: `T${Math.floor(1000 + Math.random() * 9000)}`,
-                type: "debit",
-                title: type === 'upi' ? 'UPI Transfer' : 'Bank Transfer',
-                description: type === 'upi' 
-                    ? `To UPI ID: ${upi}${remarks ? ` (${remarks})` : ''}`
-                    : `To Account: ${account}${remarks ? ` (${remarks})` : ''}`,
-                amount: amount,
-                date: new Date().toISOString().split('T')[0],
-                category: "transfer"
-            });
-            
-            updateBalances();
-            renderTransactions();
-            renderFullTransactions();
-            transferModal.style.display = 'none';
-            transferAmount.value = '';
-            document.getElementById('transfer-account').value = '';
-            document.getElementById('transfer-upi').value = '';
-            
-            showToast(`Transfer of ₹${amount.toLocaleString('en-IN')} initiated!`);
         }
 
         function processTransferPage() {
