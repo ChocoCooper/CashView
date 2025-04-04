@@ -1,0 +1,3321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CashView - Crypto Banking</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --primary-dark: #5649c0;
+            --secondary: #fd79a8;
+            --success: #00b894;
+            --warning: #fdcb6e;
+            --danger: #d63031;
+            --light: #2d3436;
+            --lighter: #636e72;
+            --dark: #121212;
+            --darker: #1a1a1a;
+            --gray: #b2bec3;
+            --gray-light: #3d3d3d;
+            --white: #ffffff;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
+            --btc-orange: #f7931a;
+            --eth-purple: #627eea;
+            --ltc-silver: #bebebe;
+            --doge-yellow: #c2a633;
+            --xrp-blue: #27a2db;
+            --usdt-green: #26a17b;
+            --card-bg: #1e1e1e;
+            --body-bg: #121212;
+            --cashview-blue: #9fe8fc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--body-bg);
+            color: var(--white);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            width: 100%;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            position: relative;
+            width: 100%;
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 15px 25px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .logo img {
+            height: 36px;
+            width: auto;
+        }
+
+        .logo h1 {
+            font-family: "Lexend", sans-serif;
+            font-size: 24px;
+            color: var(--white);
+            margin-left: 10px;
+        }
+
+        .logo h1 span {
+            color: var(--cashview-blue);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .profile-pic {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            overflow: hidden;
+        }
+
+        .profile-pic svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--primary);
+            cursor: pointer;
+            z-index: 1001;
+            position: relative;
+        }
+
+        .menu-header {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--gray-light);
+            gap: 10px;
+        }
+
+        .menu-title {
+            font-family: "Lexend", sans-serif;
+            font-size: 30px;
+            font-weight: 600;
+            color: var(--white);
+        }
+
+        .menu-title span {
+            color: var(--cashview-blue);
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 25px;
+            width: 100%;
+        }
+
+        .sidebar {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 25px;
+            height: fit-content;
+            transition: var(--transition);
+            position: relative;
+            z-index: 1000;
+        }
+
+        .balance-card {
+            background-color: var(--dark);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid var(--gray-light);
+            position: relative;
+            z-index: 1;
+        }
+
+        .nav-menu {
+            list-style: none;
+            margin-top: 10px;
+        }
+
+        .nav-item {
+            margin-bottom: 12px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--white);
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-link i {
+            width: 20px;
+            text-align: center;
+            flex-shrink: 0;
+            color: var(--gray);
+        }
+
+        .nav-link span {
+            flex-grow: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(108, 92, 231, 0.2);
+            color: var(--primary);
+        }
+
+        .nav-link:hover i, .nav-link.active i {
+            color: var(--primary);
+        }
+
+        .nav-link.active {
+            font-weight: 600;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .page {
+            display: none;
+            width: 100%;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .welcome-card {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            margin-bottom: 25px;
+        }
+
+        .welcome-card::after {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .welcome-card h2 {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .welcome-card p {
+            opacity: 0.9;
+            margin-bottom: 20px;
+            max-width: 60%;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+            width: 100%;
+        }
+
+        .action-btn {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--white);
+            transition: var(--transition);
+            min-width: 0;
+            border: 1px solid var(--gray-light);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary);
+        }
+
+        .action-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .action-btn:nth-child(1) .action-icon {
+            background-color: rgba(0, 184, 148, 0.1);
+            color: var(--success);
+        }
+
+        .action-btn:nth-child(2) .action-icon {
+            background-color: rgba(214, 48, 49, 0.1);
+            color: var(--danger);
+        }
+
+        .action-btn:nth-child(3) .action-icon {
+            background-color: rgba(253, 203, 110, 0.1);
+            color: var(--warning);
+        }
+
+        .action-btn:nth-child(4) .action-icon {
+            background-color: rgba(108, 92, 231, 0.1);
+            color: var(--primary);
+        }
+
+        .action-btn span {
+            font-weight: 600;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+            text-align: center;
+        }
+
+        .balance-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .balance-header h3 {
+            font-size: 18px;
+            color: var(--white);
+        }
+
+        .balance-amount {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 5px;
+        }
+
+        .balance-subtext {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        .balance-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            background-color: var(--dark);
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid var(--gray-light);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--white);
+        }
+
+        .transactions-section {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 25px;
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid var(--gray-light);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-header h3 {
+            font-size: 18px;
+            color: var(--white);
+        }
+
+        .view-all {
+            color: var(--primary);
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: var(--transition);
+        }
+
+        .view-all:hover {
+            color: var(--primary-dark);
+        }
+
+        .transactions-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+            min-width: 600px;
+        }
+
+        .transactions-table th {
+            text-align: left;
+            padding: 10px 15px;
+            color: var(--gray);
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .transaction-row {
+            background-color: var(--dark);
+            border-radius: 10px;
+            transition: var(--transition);
+            border: 1px solid var(--gray-light);
+        }
+
+        .transaction-row:hover {
+            background-color: var(--gray-light);
+        }
+
+        .transaction-row td {
+            padding: 15px;
+            vertical-align: middle;
+        }
+
+        .transaction-details {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .transaction-title {
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--white);
+        }
+
+        .transaction-date {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .transaction-amount {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .credit {
+            color: var(--success);
+        }
+
+        .debit {
+            color: var(--danger);
+        }
+
+        .transaction-status {
+            font-size: 12px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        .status-completed {
+            background-color: rgba(0, 184, 148, 0.1);
+            color: var(--success);
+        }
+
+        .status-pending {
+            background-color: rgba(253, 203, 110, 0.1);
+            color: var(--warning);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(3px);
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            width: 500px;
+            max-width: 95%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            animation: modalFadeIn 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid var(--gray-light);
+            margin: 20px;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--gray-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: var(--card-bg);
+            z-index: 1;
+        }
+
+        .modal-header h3 {
+            font-size: 18px;
+            color: var(--white);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: var(--gray);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close-btn:hover {
+            color: var(--white);
+        }
+
+        #close-sidebar {
+            color: var(--primary);
+            font-size: 30px;
+        }
+
+        #close-sidebar:hover {
+            color: var(--primary-dark);
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--white);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: var(--dark);
+            border: 1px solid var(--gray-light);
+            border-radius: 8px;
+            font-size: 14px;
+            transition: var(--transition);
+            color: var(--white);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group .form-control {
+            padding-left: 40px;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        .modal-footer {
+            padding: 20px;
+            border-top: 1px solid var(--gray-light);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            position: sticky;
+            bottom: 0;
+            background: var(--card-bg);
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--gray-light);
+            color: var(--white);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--gray-light);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--success);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 1100;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            max-width: 90%;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast i {
+            font-size: 18px;
+        }
+
+        .toast-danger {
+            background-color: var(--danger);
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+            display: none;
+        }
+
+        .crypto-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: var(--transition);
+            border: 1px solid var(--gray-light);
+        }
+
+        .crypto-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary);
+        }
+
+        .crypto-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .crypto-name {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .crypto-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+        }
+
+        .btc-icon {
+            background-color: var(--btc-orange);
+        }
+
+        .eth-icon {
+            background-color: var(--eth-purple);
+        }
+
+        .ltc-icon {
+            background-color: var(--ltc-silver);
+        }
+
+        .doge-icon {
+            background-color: var(--doge-yellow);
+        }
+
+        .xrp-icon {
+            background-color: var(--xrp-blue);
+        }
+
+        .usdt-icon {
+            background-color: var(--usdt-green);
+        }
+
+        .crypto-price {
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--white);
+        }
+
+        .crypto-change {
+            font-size: 14px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .positive-change {
+            background-color: rgba(0, 184, 148, 0.1);
+            color: var(--success);
+        }
+
+        .negative-change {
+            background-color: rgba(214, 48, 49, 0.1);
+            color: var(--danger);
+        }
+
+        .crypto-balance {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .crypto-balance-label {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .crypto-balance-value {
+            font-weight: 600;
+            color: var(--white);
+        }
+
+        .crypto-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .crypto-btn {
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .crypto-buy {
+            background-color: rgba(0, 184, 148, 0.1);
+            color: var(--success);
+        }
+
+        .crypto-buy:hover {
+            background-color: rgba(0, 184, 148, 0.2);
+        }
+
+        .crypto-sell {
+            background-color: rgba(214, 48, 49, 0.1);
+            color: var(--danger);
+        }
+
+        .crypto-sell:hover {
+            background-color: rgba(214, 48, 49, 0.2);
+        }
+
+        .crypto-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .crypto-address {
+            background-color: var(--dark);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 13px;
+            word-break: break-all;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: var(--white);
+            border: 1px solid var(--gray-light);
+        }
+
+        .copy-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .qr-code {
+            width: 120px;
+            height: 120px;
+            margin: 15px auto;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--gray-light);
+        }
+
+        .qr-code img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .crypto-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--gray-light);
+            margin-bottom: 20px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .crypto-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .crypto-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--gray);
+            border-bottom: 2px solid transparent;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .crypto-tab.active {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .crypto-tab-content {
+            display: none;
+        }
+
+        .crypto-tab-content.active {
+            display: block;
+        }
+
+        .crypto-modal .modal-content {
+            width: 600px;
+        }
+
+        .crypto-amount-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .crypto-amount-group .form-control {
+            flex: 1;
+        }
+
+        .crypto-conversion {
+            font-size: 13px;
+            color: var(--gray);
+            margin-top: 5px;
+            text-align: right;
+        }
+
+        .page-title {
+            font-size: 24px;
+            margin-bottom: 30px;
+            color: var(--white);
+            margin-top: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 25px;
+            margin-bottom: 25px;
+            width: 100%;
+            border: 1px solid var(--gray-light);
+        }
+
+        .filter-section {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .profile-section {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        .profile-picture {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .profile-picture svg {
+            width: 80%;
+            height: 80%;
+        }
+
+        .info-group {
+            margin-bottom: 15px;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-weight: 500;
+            color: var(--white);
+        }
+
+        .edit-form {
+            display: none;
+            margin-top: 15px;
+        }
+
+        .edit-form.active {
+            display: block;
+        }
+
+        .transactions-container {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            padding-bottom: 15px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) var(--dark);
+        }
+
+        .transactions-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .transactions-container::-webkit-scrollbar-track {
+            background: var(--dark);
+            border-radius: 10px;
+        }
+
+        .transactions-container::-webkit-scrollbar-thumb {
+            background-color: var(--primary);
+            border-radius: 10px;
+        }
+
+        .transaction-card {
+            min-width: 280px;
+            background-color: var(--dark);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            border: 1px solid var(--gray-light);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .transaction-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .transaction-card-title {
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--white);
+        }
+
+        .transaction-card-amount {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .transaction-card-details {
+            font-size: 13px;
+            color: var(--gray);
+        }
+
+        .transaction-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .transaction-card-date {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .auth-container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .auth-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 30px;
+            border: 1px solid var(--gray-light);
+        }
+
+        .auth-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: var(--white);
+            text-align: center;
+        }
+
+        .auth-footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        .auth-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .auth-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-actions {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .balance-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: -300px;
+                width: 280px;
+                height: 100vh;
+                z-index: 1000;
+                overflow-y: auto;
+                transition: var(--transition);
+                padding: 25px;
+            }
+
+            .sidebar.active {
+                left: 0;
+            }
+
+            .overlay.active {
+                display: block;
+            }
+
+            .welcome-card p {
+                max-width: 100%;
+            }
+
+            .profile-section {
+                grid-template-columns: 1fr;
+            }
+
+            .crypto-grid {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+
+            header {
+                flex-direction: row;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .transaction-row td {
+                padding: 10px;
+            }
+
+            .transaction-title {
+                font-size: 14px;
+            }
+
+            .transaction-amount {
+                font-size: 14px;
+            }
+
+            .transaction-status {
+                font-size: 11px;
+            }
+            
+            .profile-picture {
+                width: 100px;
+                height: 100px;
+                margin: 0 auto;
+            }
+
+            .crypto-modal .modal-content {
+                width: 95%;
+            }
+
+            .transaction-card {
+                min-width: 240px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 10px;
+            }
+
+            .welcome-card h2 {
+                font-size: 20px;
+            }
+
+            .balance-amount {
+                font-size: 28px;
+            }
+
+            .transactions-table th {
+                padding: 8px 10px;
+                font-size: 13px;
+            }
+
+            .transaction-row td {
+                padding: 8px;
+            }
+
+            .filter-section {
+                flex-direction: column;
+            }
+
+            .filter-group {
+                min-width: 100%;
+            }
+            
+            .modal-content {
+                width: 100%;
+                max-width: 100%;
+                border-radius: 0;
+                height: 100vh;
+                max-height: 100vh;
+            }
+            
+            .modal-header, .modal-footer {
+                position: relative;
+            }
+
+            .crypto-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .transaction-card {
+                min-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <button class="menu-toggle" id="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="logo" id="logo">
+                <img src="https://github.com/ChocoCooper/CashView/raw/refs/heads/main/logo.png" alt="CashView Logo">
+                <h1>Cash<span>View</span></h1>
+            </div>
+            <div class="header-actions">
+                <div class="profile-pic" id="profile-pic">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                    </svg>
+                </div>
+            </div>
+        </header>
+
+        <div class="overlay" id="overlay"></div>
+
+        <div class="dashboard">
+            <div class="sidebar" id="sidebar">
+                <div class="menu-header">
+                    <button class="close-btn" id="close-sidebar">&times;</button>
+                    <div class="menu-title">Cash<span>View</span></div>
+                </div>
+
+                <div class="balance-card">
+                    <div class="balance-amount">₹<span id="current-balance">87,542.50</span></div>
+                    <div class="balance-subtext">Available Balance</div>
+                </div>
+
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active" id="dashboard-link" data-page="dashboard">
+                            <i class="fas fa-home"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" id="transactions-link" data-page="transactions">
+                            <i class="fas fa-exchange-alt"></i>
+                            <span>Transactions</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" id="transfer-link" data-page="transfer">
+                            <i class="fas fa-paper-plane"></i>
+                            <span>Transfer Money</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" id="crypto-link" data-page="crypto">
+                            <i class="fab fa-bitcoin"></i>
+                            <span>Crypto Wallet</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" id="profile-link" data-page="profile">
+                            <i class="fas fa-user"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" id="support-link" data-page="support">
+                            <i class="fas fa-headset"></i>
+                            <span>Support</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="main-content">
+                <!-- Dashboard Page -->
+                <div class="page active" id="dashboard-page">
+                    <div class="welcome-card">
+                        <h2>Welcome back!</h2>
+                        <p>You have 3 new notifications and 2 pending transactions. Manage your finances easily with CashView.</p>
+                    </div>
+
+                    <div class="quick-actions">
+                        <a href="#" class="action-btn" id="deposit-btn">
+                            <div class="action-icon">
+                                <i class="fas fa-rupee-sign"></i>
+                            </div>
+                            <span>Deposit</span>
+                        </a>
+                        <a href="#" class="action-btn" id="withdraw-btn">
+                            <div class="action-icon">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <span>Withdraw</span>
+                        </a>
+                        <a href="#" class="action-btn" id="quick-transfer-btn">
+                            <div class="action-icon">
+                                <i class="fas fa-paper-plane"></i>
+                            </div>
+                            <span>Quick Transfer</span>
+                        </a>
+                        <a href="#" class="action-btn" id="crypto-btn">
+                            <div class="action-icon">
+                                <i class="fab fa-bitcoin"></i>
+                            </div>
+                            <span>Crypto</span>
+                        </a>
+                    </div>
+
+                    <div class="balance-card">
+                        <div class="balance-header">
+                            <h3>Account Summary</h3>
+                            <a href="#" class="view-all">
+                                <span>View Details</span>
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                        </div>
+                        <div class="balance-amount">₹<span id="main-balance">87,542.50</span></div>
+                        <div class="balance-subtext">Current Balance • Savings Account • XXXX-7890</div>
+
+                        <div class="balance-stats">
+                            <div class="stat-item">
+                                <div class="stat-label">Income (this month)</div>
+                                <div class="stat-value">₹42,500.00</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">Expenses (this month)</div>
+                                <div class="stat-value">₹18,750.00</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">Next Payday</div>
+                                <div class="stat-value">5 days</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="transactions-section">
+                        <div class="section-header">
+                            <h3>Recent Transactions</h3>
+                            <a href="#" class="view-all" id="view-all-transactions">
+                                <span>View All</span>
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                        </div>
+
+                        <div class="transactions-container" id="transactions-list">
+                            <!-- Transaction cards will be inserted here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transactions Page -->
+                <div class="page" id="transactions-page">
+                    <h2 class="page-title">Transaction History</h2>
+                    
+                    <div class="card">
+                        <div class="filter-section">
+                            <div class="filter-group">
+                                <label class="form-label">Date Range</label>
+                                <select class="form-control" id="date-range">
+                                    <option value="30">Last 30 days</option>
+                                    <option value="90">Last 3 months</option>
+                                    <option value="180">Last 6 months</option>
+                                    <option value="all">All transactions</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label class="form-label">Transaction Type</label>
+                                <select class="form-control" id="transaction-type">
+                                    <option value="all">All Transactions</option>
+                                    <option value="credit">Credits</option>
+                                    <option value="debit">Debits</option>
+                                    <option value="transfer">Transfers</option>
+                                    <option value="crypto">Crypto</option>
+                                    <option value="bill">Bills</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label class="form-label">Amount Range</label>
+                                <select class="form-control" id="amount-range">
+                                    <option value="all">Any amount</option>
+                                    <option value="1000">Less than ₹1,000</option>
+                                    <option value="5000">₹1,000 - ₹5,000</option>
+                                    <option value="5001">More than ₹5,000</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="transactions-container" id="full-transactions-list">
+                            <!-- Full transaction cards will be inserted here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transfer Page -->
+                <div class="page" id="transfer-page">
+                    <h2 class="page-title">Transfer Money</h2>
+                    
+                    <div class="card">
+                        <div class="form-group">
+                            <label class="form-label">From Account</label>
+                            <select class="form-control">
+                                <option>Savings Account (XXXX-7890)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Transfer Type</label>
+                            <select class="form-control" id="transfer-page-type">
+                                <option value="internal">Within CashView Bank</option>
+                                <option value="external">Other Bank (NEFT/IMPS/RTGS)</option>
+                                <option value="upi">UPI Transfer</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="transfer-page-account-group">
+                            <label class="form-label">Account Number</label>
+                            <input type="text" class="form-control" id="transfer-page-account" placeholder="Enter account number">
+                        </div>
+                        <div class="form-group" id="transfer-page-upi-group" style="display: none;">
+                            <label class="form-label">UPI ID</label>
+                            <input type="text" class="form-control" id="transfer-page-upi" placeholder="Enter UPI ID">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Amount (₹)</label>
+                            <div class="input-group">
+                                <i class="fas fa-rupee-sign input-icon"></i>
+                                <input type="number" class="form-control" id="transfer-page-amount" placeholder="Enter amount">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Remarks (Optional)</label>
+                            <input type="text" class="form-control" id="transfer-page-remarks" placeholder="e.g. Loan repayment, Gift, etc.">
+                        </div>
+                        <button class="btn btn-primary" id="transfer-page-submit">Transfer Money</button>
+                    </div>
+                </div>
+
+                <!-- Crypto Page -->
+                <div class="page" id="crypto-page">
+                    <h2 class="page-title">Crypto Wallet</h2>
+                    
+                    <div class="card">
+                        <div class="crypto-tabs">
+                            <div class="crypto-tab active" data-tab="wallet">My Wallet</div>
+                            <div class="crypto-tab" data-tab="buy">Buy Crypto</div>
+                            <div class="crypto-tab" data-tab="sell">Sell Crypto</div>
+                            <div class="crypto-tab" data-tab="deposit">Deposit</div>
+                            <div class="crypto-tab" data-tab="withdraw">Withdraw</div>
+                        </div>
+
+                        <div class="crypto-tab-content active" id="wallet-tab">
+                            <div class="crypto-grid" id="crypto-wallet">
+                            </div>
+                        </div>
+
+                        <div class="crypto-tab-content" id="buy-tab">
+                            <div class="form-group">
+                                <label class="form-label">Select Cryptocurrency</label>
+                                <select class="form-control" id="buy-crypto-select">
+                                    <option value="BTC">Bitcoin (BTC)</option>
+                                    <option value="ETH">Ethereum (ETH)</option>
+                                    <option value="LTC">Litecoin (LTC)</option>
+                                    <option value="XRP">Ripple (XRP)</option>
+                                    <option value="USDT">Tether (USDT)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Amount in ₹</label>
+                                <div class="input-group">
+                                    <i class="fas fa-rupee-sign input-icon"></i>
+                                    <input type="number" class="form-control" id="buy-crypto-amount" placeholder="Enter amount">
+                                </div>
+                                <div class="crypto-conversion" id="buy-crypto-conversion">
+                                    ≈ 0 BTC
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Payment Method</label>
+                                <select class="form-control">
+                                    <option>Bank Transfer</option>
+                                    <option>Credit/Debit Card</option>
+                                    <option>UPI Payment</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary" id="buy-crypto-btn">Buy Crypto</button>
+                        </div>
+
+                        <div class="crypto-tab-content" id="sell-tab">
+                            <div class="form-group">
+                                <label class="form-label">Select Cryptocurrency</label>
+                                <select class="form-control" id="sell-crypto-select">
+                                    <option value="BTC">Bitcoin (BTC)</option>
+                                    <option value="ETH">Ethereum (ETH)</option>
+                                    <option value="LTC">Litecoin (LTC)</option>
+                                    <option value="XRP">Ripple (XRP)</option>
+                                    <option value="USDT">Tether (USDT)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Amount to Sell</label>
+                                <div class="input-group">
+                                    <i class="fas fa-coins input-icon"></i>
+                                    <input type="number" class="form-control" id="sell-crypto-amount" placeholder="Enter amount">
+                                </div>
+                                <div class="crypto-conversion" id="sell-crypto-conversion">
+                                    ≈ ₹0
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Deposit To</label>
+                                <select class="form-control">
+                                    <option>Savings Account (XXXX-7890)</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary" id="sell-crypto-btn">Sell Crypto</button>
+                        </div>
+
+                        <div class="crypto-tab-content" id="deposit-tab">
+                            <div class="form-group">
+                                <label class="form-label">Select Cryptocurrency</label>
+                                <select class="form-control" id="deposit-crypto-select">
+                                    <option value="BTC">Bitcoin (BTC)</option>
+                                    <option value="ETH">Ethereum (ETH)</option>
+                                    <option value="LTC">Litecoin (LTC)</option>
+                                    <option value="XRP">Ripple (XRP)</option>
+                                    <option value="USDT">Tether (USDT)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Deposit Address</label>
+                                <div class="crypto-address">
+                                    <span id="deposit-crypto-address">3FZbgi29cpjq2GjdwV8eyHuJJnkLtktZc5</span>
+                                    <button class="copy-btn" id="copy-deposit-address">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="qr-code" id="deposit-qr-code">
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=3FZbgi29cpjq2GjdwV8eyHuJJnkLtktZc5" alt="BTC Deposit Address">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Minimum Deposit</label>
+                                <div class="crypto-address">
+                                    <span id="deposit-min-amount">0.0001 BTC</span>
+                                </div>
+                            </div>
+                            <div style="background-color: rgba(108, 92, 231, 0.1); padding: 10px; border-radius: 8px; margin-top: 15px; color: var(--primary); font-size: 14px;">
+                                <i class="fas fa-info-circle"></i> Send only the selected cryptocurrency to this address. Sending other assets may result in permanent loss.
+                            </div>
+                        </div>
+
+                        <div class="crypto-tab-content" id="withdraw-tab">
+                            <div class="form-group">
+                                <label class="form-label">Select Cryptocurrency</label>
+                                <select class="form-control" id="withdraw-crypto-select">
+                                    <option value="BTC">Bitcoin (BTC)</option>
+                                    <option value="ETH">Ethereum (ETH)</option>
+                                    <option value="LTC">Litecoin (LTC)</option>
+                                    <option value="XRP">Ripple (XRP)</option>
+                                    <option value="USDT">Tether (USDT)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Withdrawal Address</label>
+                                <input type="text" class="form-control" id="withdraw-crypto-address" placeholder="Enter external wallet address">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Amount</label>
+                                <div class="crypto-amount-group">
+                                    <div class="input-group" style="flex: 2;">
+                                        <i class="fas fa-coins input-icon"></i>
+                                        <input type="number" class="form-control" id="withdraw-crypto-amount" placeholder="Enter amount">
+                                    </div>
+                                    <button class="btn btn-outline" style="flex: 1;" id="withdraw-max-btn">Max</button>
+                                </div>
+                                <div class="crypto-conversion" id="withdraw-crypto-conversion">
+                                    Available: 0.0425 BTC
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Network Fee</label>
+                                <div class="crypto-address">
+                                    <span id="withdraw-network-fee">≈ 0.0005 BTC</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" id="withdraw-crypto-btn">Withdraw Crypto</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Page -->
+                <div class="page" id="profile-page">
+                    <h2 class="page-title">My Profile</h2>
+                    
+                    <div class="card">
+                        <div class="profile-section">
+                            <div class="profile-picture">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                                </svg>
+                            </div>
+                            <div class="profile-info">
+                                <div>
+                                    <h3 id="profile-name">John Doe</h3>
+                                    <p style="color: var(--gray);">Customer since 2018</p>
+                                </div>
+                                <div>
+                                    <div class="info-group">
+                                        <div class="info-label">Email</div>
+                                        <div class="info-value" id="profile-email">john.doe@example.com</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="edit-form" id="profile-edit-form">
+                            <div class="form-group">
+                                <label class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="edit-name" value="John Doe">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" id="edit-email" value="john.doe@example.com">
+                            </div>
+                            <button class="btn btn-primary" id="save-profile-btn">Save Changes</button>
+                            <button class="btn btn-outline" id="cancel-edit-btn">Cancel</button>
+                        </div>
+
+                        <button class="btn btn-outline" style="margin-top: 20px;" id="edit-profile-btn">
+                            <i class="fas fa-edit"></i> Edit Profile
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Support Page -->
+                <div class="page" id="support-page">
+                    <h2 class="page-title">Help & Support</h2>
+                    
+                    <div class="card">
+                        <h3>Frequently Asked Questions</h3>
+                        <div style="margin-top: 20px;">
+                            <div style="border-bottom: 1px solid var(--gray-light); padding: 15px 0;">
+                                <div style="font-weight: 600; margin-bottom: 10px;">How do I reset my password?</div>
+                                <div style="color: var(--gray);">You can reset your password by clicking on "Forgot Password" on the login page. A reset link will be sent to your registered email address.</div>
+                            </div>
+                            <div style="border-bottom: 1px solid var(--gray-light); padding: 15px 0;">
+                                <div style="font-weight: 600; margin-bottom: 10px;">What are the transfer limits?</div>
+                                <div style="color: var(--gray);">The daily transfer limit is ₹1,00,000 for NEFT and ₹2,00,000 for IMPS. You can increase these limits by visiting your nearest branch.</div>
+                            </div>
+                            <div style="border-bottom: 1px solid var(--gray-light); padding: 15px 0;">
+                                <div style="font-weight: 600; margin-bottom: 10px;">How do I update my mobile number?</div>
+                                <div style="color: var(--gray);">You can update your mobile number by visiting the "Profile" section in the app or by visiting your nearest branch with valid ID proof.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Contact Us</h3>
+                        <div style="margin-top: 20px;">
+                            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                                <div style="width: 40px; height: 40px; border-radius: 50%; background-color: rgba(108, 92, 231, 0.1); display: flex; align-items: center; justify-content: center; color: var(--primary);">
+                                    <i class="fas fa-phone-alt"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 600;">Customer Care</div>
+                                    <div style="color: var(--gray);">1800 123 4567 (24x7)</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                                <div style="width: 40px; height: 40px; border-radius: 50%; background-color: rgba(108, 92, 231, 0.1); display: flex; align-items: center; justify-content: center; color: var(--primary);">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 600;">Email Support</div>
+                                    <div style="color: var(--gray);">support@cashview.com</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <div style="width: 40px; height: 40px; border-radius: 50%; background-color: rgba(108, 92, 231, 0.1); display: flex; align-items: center; justify-content: center; color: var(--primary);">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 600;">Branch Locator</div>
+                                    <div style="color: var(--gray);">Find the nearest branch or ATM</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+    <!-- Deposit Modal -->
+    <div class="modal" id="deposit-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Deposit Money</h3>
+                <button class="close-btn" id="close-deposit">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">From Account</label>
+                    <select class="form-control">
+                        <option>Savings Account (XXXX-7890)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Deposit Method</label>
+                    <select class="form-control" id="deposit-method">
+                        <option value="cash">Cash Deposit</option>
+                        <option value="cheque">Cheque Deposit</option>
+                        <option value="transfer">Bank Transfer</option>
+                        <option value="upi">UPI Payment</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Amount (₹)</label>
+                    <div class="input-group">
+                        <i class="fas fa-rupee-sign input-icon"></i>
+                        <input type="number" class="form-control" id="deposit-amount" placeholder="Enter amount">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Remarks (Optional)</label>
+                    <input type="text" class="form-control" id="deposit-remarks" placeholder="e.g. Salary, Gift, etc.">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancel-deposit">Cancel</button>
+                <button class="btn btn-primary" id="confirm-deposit">Deposit</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Withdraw Modal -->
+    <div class="modal" id="withdraw-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Withdraw Money</h3>
+                <button class="close-btn" id="close-withdraw">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">From Account</label>
+                    <select class="form-control">
+                        <option>Savings Account (XXXX-7890)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Withdrawal Method</label>
+                    <select class="form-control" id="withdraw-method">
+                        <option value="atm">ATM Withdrawal</option>
+                        <option value="branch">Branch Withdrawal</option>
+                        <option value="transfer">Bank Transfer</option>
+                        <option value="upi">UPI Payment</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Amount (₹)</label>
+                    <div class="input-group">
+                        <i class="fas fa-rupee-sign input-icon"></i>
+                        <input type="number" class="form-control" id="withdraw-amount" placeholder="Enter amount">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Remarks (Optional)</label>
+                    <input type="text" class="form-control" id="withdraw-remarks" placeholder="e.g. Shopping, Bills, etc.">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancel-withdraw">Cancel</button>
+                <button class="btn btn-primary" id="confirm-withdraw">Withdraw</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transfer Modal -->
+    <div class="modal" id="transfer-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Transfer Money</h3>
+                <button class="close-btn" id="close-transfer">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">From Account</label>
+                    <select class="form-control">
+                        <option>Savings Account (XXXX-7890)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">To Account</label>
+                    <select class="form-control" id="transfer-type">
+                        <option value="internal">Within CashView Bank</option>
+                        <option value="external">Other Bank (NEFT/IMPS/RTGS)</option>
+                        <option value="upi">UPI Transfer</option>
+                    </select>
+                </div>
+                <div class="form-group" id="account-number-group">
+                    <label class="form-label">Account Number</label>
+                    <input type="text" class="form-control" id="transfer-account" placeholder="Enter account number">
+                </div>
+                <div class="form-group" id="upi-id-group" style="display: none;">
+                    <label class="form-label">UPI ID</label>
+                    <input type="text" class="form-control" id="transfer-upi" placeholder="Enter UPI ID">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Amount (₹)</label>
+                    <div class="input-group">
+                        <i class="fas fa-rupee-sign input-icon"></i>
+                        <input type="number" class="form-control" id="transfer-amount" placeholder="Enter amount">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Remarks (Optional)</label>
+                    <input type="text" class="form-control" id="transfer-remarks" placeholder="e.g. Loan repayment, Gift, etc.">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancel-transfer">Cancel</button>
+                <button class="btn btn-primary" id="confirm-transfer">Transfer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Crypto Confirm Modal -->
+    <div class="modal crypto-modal" id="crypto-confirm-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="crypto-modal-title">Confirm Transaction</h3>
+                <button class="close-btn" id="close-crypto-confirm">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="crypto-confirm-details">
+                </div>
+                <div class="form-group" id="crypto-2fa-group" style="display: none;">
+                    <label class="form-label">2FA Code</label>
+                    <input type="text" class="form-control" id="crypto-2fa-code" placeholder="Enter 6-digit code from authenticator">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancel-crypto-confirm">Cancel</button>
+                <button class="btn btn-primary" id="confirm-crypto-transaction">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast-notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="toast-message">Transaction completed successfully!</span>
+    </div>
+
+    <script>
+        // User Data with multiple accounts
+        const userData = {
+            name: "John Doe",
+            email: "john.doe@example.com",
+            accounts: [
+                {
+                    type: "Savings",
+                    number: "XXXX-7890",
+                    balance: 87542.50,
+                    currency: "INR",
+                    active: true
+                }
+            ],
+            crypto: {
+                BTC: { balance: 0.0425, address: "3FZbgi29cpjq2GjdwV8eyHuJJnkLtktZc5" },
+                ETH: { balance: 1.25, address: "0x71C7656EC7ab88b098defB751B7401B5f6d8976F" },
+                LTC: { balance: 5.6, address: "LRMtb18YZTq7UJ9Y4rUjQ1Z2vXnsZ3JHsK" },
+                XRP: { balance: 320, address: "rPdvC6ccq8hCdPKSPJkPmyZ4Mi1oG2FFkT" },
+                USDT: { balance: 500, address: "0x55d398326f99059fF775485246999027B3197955" }
+            },
+            transactions: [
+                {
+                    id: "T1001",
+                    type: "credit",
+                    title: "Salary Credit",
+                    description: "From XYZ Corp to XXXX-7890",
+                    amount: 45000.00,
+                    date: "2023-06-01",
+                    status: "completed",
+                    category: "salary"
+                },
+                {
+                    id: "T1002",
+                    type: "debit",
+                    title: "Electricity Bill",
+                    description: "BSES Rajdhani Bill Payment",
+                    amount: 1850.00,
+                    date: "2023-05-28",
+                    status: "completed",
+                    category: "bill"
+                },
+                {
+                    id: "T1003",
+                    type: "debit",
+                    title: "Grocery Shopping",
+                    description: "Big Bazaar - Weekend shopping",
+                    amount: 3250.50,
+                    date: "2023-05-27",
+                    status: "completed",
+                    category: "shopping"
+                },
+                {
+                    id: "T1004",
+                    type: "credit",
+                    title: "Interest Credit",
+                    description: "Interest on XXXX-7890",
+                    amount: 542.50,
+                    date: "2023-05-25",
+                    status: "completed",
+                    category: "interest"
+                },
+                {
+                    id: "T1005",
+                    type: "debit",
+                    title: "Credit Card Payment",
+                    description: "HDFC Bank Card XXXX-1234",
+                    amount: 12500.00,
+                    date: "2023-05-20",
+                    status: "pending",
+                    category: "payment"
+                },
+                {
+                    id: "T1006",
+                    type: "debit",
+                    title: "Rent Payment",
+                    description: "To XXXX-4321",
+                    amount: 15000.00,
+                    date: "2023-05-15",
+                    status: "completed",
+                    category: "rent"
+                },
+                {
+                    id: "T1007",
+                    type: "credit",
+                    title: "Freelance Payment",
+                    description: "From Tech Solutions Inc",
+                    amount: 25000.00,
+                    date: "2023-05-10",
+                    status: "completed",
+                    category: "income"
+                },
+                {
+                    id: "T1008",
+                    type: "debit",
+                    title: "Dining Out",
+                    description: "The Great Kabab Factory",
+                    amount: 1850.00,
+                    date: "2023-05-08",
+                    status: "completed",
+                    category: "food"
+                },
+                {
+                    id: "C1001",
+                    type: "debit",
+                    title: "BTC Purchase",
+                    description: "Bought 0.01 BTC",
+                    amount: 18000.00,
+                    date: "2023-05-05",
+                    status: "completed",
+                    category: "crypto"
+                },
+                {
+                    id: "C1002",
+                    type: "credit",
+                    title: "ETH Sale",
+                    description: "Sold 0.5 ETH",
+                    amount: 7500.00,
+                    date: "2023-05-03",
+                    status: "completed",
+                    category: "crypto"
+                },
+                {
+                    id: "B1001",
+                    type: "debit",
+                    title: "Internet Bill",
+                    description: "Airtel Fiber Bill Payment",
+                    amount: 1199.00,
+                    date: "2023-05-15",
+                    status: "completed",
+                    category: "bill"
+                }
+            ],
+            monthlyStats: {
+                income: 42500.00,
+                expenses: 18750.00
+            }
+        };
+
+        const cryptoData = {
+            BTC: { 
+                name: "Bitcoin", 
+                price: 0, 
+                change24h: 0,
+                icon: "https://cryptologos.cc/logos/bitcoin-btc-logo.png",
+                color: "var(--btc-orange)"
+            },
+            ETH: { 
+                name: "Ethereum", 
+                price: 0, 
+                change24h: 0,
+                icon: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+                color: "var(--eth-purple)"
+            },
+            LTC: { 
+                name: "Litecoin", 
+                price: 0, 
+                change24h: 0,
+                icon: "https://cryptologos.cc/logos/litecoin-ltc-logo.png",
+                color: "var(--ltc-silver)"
+            },
+            XRP: { 
+                name: "Ripple", 
+                price: 0, 
+                change24h: 0,
+                icon: "https://cryptologos.cc/logos/xrp-xrp-logo.png",
+                color: "var(--xrp-blue)"
+            },
+            USDT: { 
+                name: "Tether", 
+                price: 83.5, 
+                change24h: 0.1,
+                icon: "https://cryptologos.cc/logos/tether-usdt-logo.png",
+                color: "var(--usdt-green)"
+            }
+        };
+
+        // DOM Elements
+        const menuToggle = document.getElementById('menu-toggle');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        const logo = document.getElementById('logo');
+        const closeSidebar = document.getElementById('close-sidebar');
+        const profilePic = document.getElementById('profile-pic');
+        const navLinks = document.querySelectorAll('.nav-link[data-page]');
+        const pages = document.querySelectorAll('.page');
+        const depositBtn = document.getElementById('deposit-btn');
+        const withdrawBtn = document.getElementById('withdraw-btn');
+        const quickTransferBtn = document.getElementById('quick-transfer-btn');
+        const cryptoBtn = document.getElementById('crypto-btn');
+        const depositModal = document.getElementById('deposit-modal');
+        const withdrawModal = document.getElementById('withdraw-modal');
+        const transferModal = document.getElementById('transfer-modal');
+        const cryptoConfirmModal = document.getElementById('crypto-confirm-modal');
+        const closeDeposit = document.getElementById('close-deposit');
+        const closeWithdraw = document.getElementById('close-withdraw');
+        const closeTransfer = document.getElementById('close-transfer');
+        const closeCryptoConfirm = document.getElementById('close-crypto-confirm');
+        const cancelDeposit = document.getElementById('cancel-deposit');
+        const cancelWithdraw = document.getElementById('cancel-withdraw');
+        const cancelTransfer = document.getElementById('cancel-transfer');
+        const cancelCryptoConfirm = document.getElementById('cancel-crypto-confirm');
+        const confirmDeposit = document.getElementById('confirm-deposit');
+        const confirmWithdraw = document.getElementById('confirm-withdraw');
+        const confirmTransfer = document.getElementById('confirm-transfer');
+        const transferPageSubmit = document.getElementById('transfer-page-submit');
+        const confirmCryptoTransaction = document.getElementById('confirm-crypto-transaction');
+        const currentBalance = document.getElementById('current-balance');
+        const mainBalance = document.getElementById('main-balance');
+        const transactionsList = document.getElementById('transactions-list');
+        const fullTransactionsList = document.getElementById('full-transactions-list');
+        const viewAllTransactions = document.getElementById('view-all-transactions');
+        const toastNotification = document.getElementById('toast-notification');
+        const toastMessage = document.getElementById('toast-message');
+        const cryptoWallet = document.getElementById('crypto-wallet');
+        const cryptoBuySelect = document.getElementById('buy-crypto-select');
+        const cryptoBuyAmount = document.getElementById('buy-crypto-amount');
+        const cryptoBuyConversion = document.getElementById('buy-crypto-conversion');
+        const cryptoSellSelect = document.getElementById('sell-crypto-select');
+        const cryptoSellAmount = document.getElementById('sell-crypto-amount');
+        const cryptoSellConversion = document.getElementById('sell-crypto-conversion');
+        const cryptoDepositSelect = document.getElementById('deposit-crypto-select');
+        const cryptoDepositAddress = document.getElementById('deposit-crypto-address');
+        const cryptoDepositQr = document.getElementById('deposit-qr-code');
+        const cryptoDepositMin = document.getElementById('deposit-min-amount');
+        const cryptoWithdrawSelect = document.getElementById('withdraw-crypto-select');
+        const cryptoWithdrawAddress = document.getElementById('withdraw-crypto-address');
+        const cryptoWithdrawAmount = document.getElementById('withdraw-crypto-amount');
+        const cryptoWithdrawConversion = document.getElementById('withdraw-crypto-conversion');
+        const cryptoWithdrawMax = document.getElementById('withdraw-max-btn');
+        const cryptoWithdrawFee = document.getElementById('withdraw-network-fee');
+        const cryptoConfirmDetails = document.getElementById('crypto-confirm-details');
+        const cryptoModalTitle = document.getElementById('crypto-modal-title');
+        const crypto2faGroup = document.getElementById('crypto-2fa-group');
+        const crypto2faCode = document.getElementById('crypto-2fa-code');
+        const cryptoTabs = document.querySelectorAll('.crypto-tab');
+        const cryptoTabContents = document.querySelectorAll('.crypto-tab-content');
+        const editProfileBtn = document.getElementById('edit-profile-btn');
+        const saveProfileBtn = document.getElementById('save-profile-btn');
+        const cancelEditBtn = document.getElementById('cancel-edit-btn');
+        const profileEditForm = document.getElementById('profile-edit-form');
+        const profileName = document.getElementById('profile-name');
+        const profileEmail = document.getElementById('profile-email');
+        const loginBtn = document.getElementById('login-btn'e-range');
+        const transactionTypeFilter = document.getElementById('transaction-type');
+        const amountRangeFilter = document.getElementById('amount-range');
+
+        // State
+        let currentPage = 'dashboard';
+        let isLoggedIn = false;
+
+        // Initialize the app
+function init() {
+    isLoggedIn = true; // Set to true by default
+    showDashboard(); // Show dashboard immediately
+    setupEventListeners();
+}
+
+        function showDashboard() {
+            document.getElementById('dashboard-page').classList.add('active');
+            document.getElementById('login-page').classList.remove('active');
+            document.getElementById('register-page').classList.remove('active');
+            
+            updateBalances();
+            renderTransactions();
+            renderFullTransactions();
+            loadProfileData();
+            fetchCryptoPrices();
+            renderCryptoWallet();
+            setupCryptoDepositAddresses();
+        }
+
+        function showLogin() {
+            document.getElementById('dashboard-page').classList.remove('active');
+            document.getElementById('login-page').classList.add('active');
+            document.getElementById('register-page').classList.remove('active');
+        }
+
+        function showRegister() {
+            document.getElementById('dashboard-page').classList.remove('active');
+            document.getElementById('login-page').classList.remove('active');
+            document.getElementById('register-page').classList.add('active');
+        }
+
+        function setupEventListeners() {
+            menuToggle.addEventListener('click', () => toggleSidebar());
+            closeSidebar.addEventListener('click', () => toggleSidebar(false));
+            overlay.addEventListener('click', () => toggleSidebar(false));
+            logo.addEventListener('click', () => navigateTo('dashboard'));
+            profilePic.addEventListener('click', () => {
+                navigateTo('profile');
+                toggleSidebar(false);
+            });
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const pageId = link.getAttribute('data-page');
+                    navigateTo(pageId);
+                    toggleSidebar(false);
+                });
+            });
+            
+            viewAllTransactions.addEventListener('click', (e) => {
+                e.preventDefault();
+                navigateTo('transactions');
+            });
+            
+            depositBtn.addEventListener('click', () => {
+                toggleSidebar(false);
+                depositModal.style.display = 'flex';
+            });
+            withdrawBtn.addEventListener('click', () => {
+                toggleSidebar(false);
+                withdrawModal.style.display = 'flex';
+            });
+            quickTransferBtn.addEventListener('click', () => {
+                toggleSidebar(false);
+                transferModal.style.display = 'flex';
+            });
+            cryptoBtn.addEventListener('click', () => {
+                toggleSidebar(false);
+                navigateTo('crypto');
+            });
+            
+            closeDeposit.addEventListener('click', () => depositModal.style.display = 'none');
+            closeWithdraw.addEventListener('click', () => withdrawModal.style.display = 'none');
+            closeTransfer.addEventListener('click', () => transferModal.style.display = 'none');
+            closeCryptoConfirm.addEventListener('click', () => cryptoConfirmModal.style.display = 'none');
+            
+            cancelDeposit.addEventListener('click', () => depositModal.style.display = 'none');
+            cancelWithdraw.addEventListener('click', () => withdrawModal.style.display = 'none');
+            cancelTransfer.addEventListener('click', () => transferModal.style.display = 'none');
+            cancelCryptoConfirm.addEventListener('click', () => cryptoConfirmModal.style.display = 'none');
+            
+            window.addEventListener('click', (e) => {
+                if (e.target === depositModal) depositModal.style.display = 'none';
+                if (e.target === withdrawModal) withdrawModal.style.display = 'none';
+                if (e.target === transferModal) transferModal.style.display = 'none';
+                if (e.target === cryptoConfirmModal) cryptoConfirmModal.style.display = 'none';
+            });
+            
+            confirmDeposit.addEventListener('click', processDeposit);
+            confirmWithdraw.addEventListener('click', processWithdrawal);
+            confirmTransfer.addEventListener('click', processTransfer);
+            transferPageSubmit.addEventListener('click', processTransferPage);
+            confirmCryptoTransaction.addEventListener('click', processCryptoTransaction);
+            
+            cryptoTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.getAttribute('data-tab');
+                    switchCryptoTab(tabId);
+                });
+            });
+            
+            cryptoBuyAmount.addEventListener('input', updateBuyConversion);
+            cryptoSellAmount.addEventListener('input', updateSellConversion);
+            cryptoBuySelect.addEventListener('change', updateBuyConversion);
+            cryptoSellSelect.addEventListener('change', updateSellConversion);
+            cryptoDepositSelect.addEventListener('change', updateDepositAddress);
+            cryptoWithdrawSelect.addEventListener('change', updateWithdrawInfo);
+            cryptoWithdrawMax.addEventListener('click', setMaxWithdraw);
+            
+            document.getElementById('buy-crypto-btn').addEventListener('click', confirmBuyCrypto);
+            document.getElementById('sell-crypto-btn').addEventListener('click', confirmSellCrypto);
+            document.getElementById('withdraw-crypto-btn').addEventListener('click', confirmWithdrawCrypto);
+            document.getElementById('copy-deposit-address').addEventListener('click', copyDepositAddress);
+            
+            editProfileBtn.addEventListener('click', showEditProfile);
+            saveProfileBtn.addEventListener('click', saveProfile);
+            cancelEditBtn.addEventListener('click', cancelEditProfile);
+            
+            dateRangeFilter.addEventListener('change', filterTransactions);
+            transactionTypeFilter.addEventListener('change', filterTransactions);
+            amountRangeFilter.addEventListener('change', filterTransactions);
+            
+            document.getElementById('transfer-page-type').addEventListener('change', function() {
+                const type = this.value;
+                document.getElementById('transfer-page-account-group').style.display = type === 'upi' ? 'none' : 'block';
+                document.getElementById('transfer-page-upi-group').style.display = type === 'upi' ? 'block' : 'none';
+            });
+            
+            document.getElementById('transfer-type').addEventListener('change', function() {
+                const type = this.value;
+                document.getElementById('account-number-group').style.display = type === 'upi' ? 'none' : 'block';
+                document.getElementById('upi-id-group').style.display = type === 'upi' ? 'block' : 'none';
+            });
+            
+            window.addEventListener('resize', handleResize);
+            handleResize();
+            
+            setInterval(fetchCryptoPrices, 60000);
+        }
+
+        function loadProfileData() {
+            profileName.textContent = userData.name;
+            profileEmail.textContent = userData.email;
+            
+            editName.value = userData.name;
+            editEmail.value = userData.email;
+        }
+
+        function handleResize() {
+            if (window.innerWidth >= 1200) {
+                sidebar.style.left = '0';
+                overlay.style.display = 'none';
+                menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            }
+        }
+
+        function navigateTo(pageId) {
+            if (!isLoggedIn && pageId !== 'login' && pageId !== 'register') {
+                showLogin();
+                return;
+            }
+
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            currentPage = pageId;
+            document.getElementById(`${pageId}-page`).classList.add('active');
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-page') === pageId) {
+                    link.classList.add('active');
+                }
+            });
+            
+            window.scrollTo(0, 0);
+        }
+
+        function toggleSidebar(show = null) {
+            if (show === false || (show === null && sidebar.classList.contains('active'))) {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+                menuToggle.style.display = 'block';
+            } else {
+                sidebar.classList.add('active');
+                overlay.classList.add('active');
+                menuToggle.style.display = 'none';
+            }
+        }
+
+        function updateBalances() {
+            const activeAccount = userData.accounts.find(account => account.active);
+            let totalBalance = activeAccount ? activeAccount.balance : 0;
+            
+            for (const [symbol, crypto] of Object.entries(userData.crypto)) {
+                const price = cryptoData[symbol].price;
+                totalBalance += crypto.balance * price;
+            }
+            
+            currentBalance.textContent = totalBalance.toLocaleString('en-IN', { 
+                minimumFractionDigits: 2, 
+                maximumFractionDigits: 2 
+            });
+            mainBalance.textContent = totalBalance.toLocaleString('en-IN', { 
+                minimumFractionDigits: 2, 
+                maximumFractionDigits: 2 
+            });
+        }
+
+        function renderTransactions() {
+            transactionsList.innerHTML = '';
+            
+            const recentTransactions = userData.transactions.slice(0, 5);
+            
+            recentTransactions.forEach(transaction => {
+                const card = document.createElement('div');
+                card.className = 'transaction-card';
+                card.innerHTML = `
+                    <div class="transaction-card-header">
+                        <div class="transaction-card-title">${transaction.title}</div>
+                        <div class="transaction-card-amount ${transaction.type}">
+                            ${transaction.type === 'credit' ? '+' : '-'}₹${transaction.amount.toLocaleString('en-IN', { 
+                                minimumFractionDigits: 2, 
+                                maximumFractionDigits: 2 
+                            })}
+                        </div>
+                    </div>
+                    <div class="transaction-card-details">${transaction.description}</div>
+                    <div class="transaction-card-footer">
+                        <div class="transaction-card-date">${formatDate(transaction.date)}</div>
+                        <div class="transaction-status status-${transaction.status}">
+                            ${transaction.status.charAt(0).toUpperCase() + transaction.status.slice(1)}
+                        </div>
+                    </div>
+                `;
+                
+                transactionsList.appendChild(card);
+            });
+        }
+
+        function renderFullTransactions() {
+            fullTransactionsList.innerHTML = '';
+            
+            userData.transactions.forEach(transaction => {
+                const card = document.createElement('div');
+                card.className = 'transaction-card';
+                card.innerHTML = `
+                    <div class="transaction-card-header">
+                        <div class="transaction-card-title">${transaction.title}</div>
+                        <div class="transaction-card-amount ${transaction.type}">
+                            ${transaction.type === 'credit' ? '+' : '-'}₹${transaction.amount.toLocaleString('en-IN', { 
+                                minimumFractionDigits: 2, 
+                                maximumFractionDigits: 2 
+                            })}
+                        </div>
+                    </div>
+                    <div class="transaction-card-details">${transaction.description}</div>
+                    <div class="transaction-card-footer">
+                        <div class="transaction-card-date">${formatDate(transaction.date)}</div>
+                        <div class="transaction-status status-${transaction.status}">
+                            ${transaction.status.charAt(0).toUpperCase() + transaction.status.slice(1)}
+                        </div>
+                    </div>
+                `;
+                
+                fullTransactionsList.appendChild(card);
+            });
+        }
+
+        function filterTransactions() {
+            const dateRange = dateRangeFilter.value;
+            const transactionType = transactionTypeFilter.value;
+            const amountRange = amountRangeFilter.value;
+            
+            const now = new Date();
+            const filteredTransactions = userData.transactions.filter(transaction => {
+                if (dateRange !== 'all') {
+                    const transactionDate = new Date(transaction.date);
+                    const daysDiff = Math.floor((now - transactionDate) / (1000 * 60 * 60 * 24));
+                    if (daysDiff > parseInt(dateRange)) {
+                        return false;
+                    }
+                }
+                
+                if (transactionType !== 'all') {
+                    if (transactionType === 'transfer' && transaction.category !== 'transfer') {
+                        return false;
+                    }
+                    if (transactionType === 'crypto' && transaction.category !== 'crypto') {
+                        return false;
+                    }
+                    if (transactionType === 'bill' && transaction.category !== 'bill') {
+                        return false;
+                    }
+                    if (transactionType === 'credit' && transaction.type !== 'credit') {
+                        return false;
+                    }
+                    if (transactionType === 'debit' && transaction.type !== 'debit') {
+                        return false;
+                    }
+                }
+                
+                if (amountRange !== 'all') {
+                    if (amountRange === '1000' && transaction.amount >= 1000) {
+                        return false;
+                    }
+                    if (amountRange === '5000' && (transaction.amount < 1000 || transaction.amount > 5000)) {
+                        return false;
+                    }
+                    if (amountRange === '5001' && transaction.amount <= 5000) {
+                        return false;
+                    }
+                }
+                
+                return true;
+            });
+            
+            fullTransactionsList.innerHTML = '';
+            
+            filteredTransactions.forEach(transaction => {
+                const card = document.createElement('div');
+                card.className = 'transaction-card';
+                card.innerHTML = `
+                    <div class="transaction-card-header">
+                        <div class="transaction-card-title">${transaction.title}</div>
+                        <div class="transaction-card-amount ${transaction.type}">
+                            ${transaction.type === 'credit' ? '+' : '-'}₹${transaction.amount.toLocaleString('en-IN', { 
+                                minimumFractionDigits: 2, 
+                                maximumFractionDigits: 2 
+                            })}
+                        </div>
+                    </div>
+                    <div class="transaction-card-details">${transaction.description}</div>
+                    <div class="transaction-card-footer">
+                        <div class="transaction-card-date">${formatDate(transaction.date)}</div>
+                        <div class="transaction-status status-${transaction.status}">
+                            ${transaction.status.charAt(0).toUpperCase() + transaction.status.slice(1)}
+                        </div>
+                    </div>
+                `;
+                
+                fullTransactionsList.appendChild(card);
+            });
+        }
+
+        async function fetchCryptoPrices() {
+            try {
+                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,litecoin,ripple,tether&vs_currencies=inr&include_24hr_change=true');
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch crypto prices');
+                }
+                
+                const data = await response.json();
+                
+                cryptoData.BTC.price = data.bitcoin.inr;
+                cryptoData.BTC.change24h = data.bitcoin.inr_24h_change;
+                
+                cryptoData.ETH.price = data.ethereum.inr;
+                cryptoData.ETH.change24h = data.ethereum.inr_24h_change;
+                
+                cryptoData.LTC.price = data.litecoin.inr;
+                cryptoData.LTC.change24h = data.litecoin.inr_24h_change;
+                
+                cryptoData.XRP.price = data.ripple.inr;
+                cryptoData.XRP.change24h = data.ripple.inr_24h_change;
+                
+                cryptoData.USDT.price = 83.5;
+                cryptoData.USDT.change24h = 0.1;
+                
+                renderCryptoWallet();
+                updateBuyConversion();
+                updateSellConversion();
+                updateWithdrawInfo();
+                updateBalances();
+                
+            } catch (error) {
+                console.error('Error fetching crypto prices:', error);
+                showToast('Failed to update crypto prices', 'error');
+            }
+        }
+
+        function renderCryptoWallet() {
+            cryptoWallet.innerHTML = '';
+            
+            for (const [symbol, data] of Object.entries(cryptoData)) {
+                const crypto = userData.crypto[symbol];
+                const balance = crypto ? crypto.balance : 0;
+                const value = balance * data.price;
+                const change = data.change24h;
+                
+                const card = document.createElement('div');
+                card.className = 'crypto-card';
+                card.innerHTML = `
+                    <div class="crypto-header">
+                        <div class="crypto-name">
+                            <div class="crypto-icon ${symbol.toLowerCase()}-icon" style="background-color: ${data.color}">
+                                <img src="${data.icon}" alt="${symbol}" style="width: 24px; height: 24px;">
+                            </div>
+                            <div>
+                                <div style="font-weight: 600;">${data.name}</div>
+                                <div style="font-size: 12px; color: var(--gray);">${symbol}</div>
+                            </div>
+                        </div>
+                        <div class="crypto-price">₹${data.price.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                    </div>
+                    <div class="crypto-change ${change >= 0 ? 'positive-change' : 'negative-change'}">
+                        ${change >= 0 ? '+' : ''}${change.toFixed(2)}%
+                    </div>
+                    <div class="crypto-balance">
+                        <div>
+                            <div class="crypto-balance-label">Balance</div>
+                            <div class="crypto-balance-value">${balance.toFixed(8)} ${symbol}</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div class="crypto-balance-label">Value</div>
+                            <div class="crypto-balance-value">₹${value.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+                        </div>
+                    </div>
+                    <div class="crypto-actions">
+                        <button class="crypto-btn crypto-buy" data-symbol="${symbol}">
+                            <i class="fas fa-plus"></i> Buy
+                        </button>
+                        <button class="crypto-btn crypto-sell" data-symbol="${symbol}">
+                            <i class="fas fa-minus"></i> Sell
+                        </button>
+                    </div>
+                `;
+                
+                cryptoWallet.appendChild(card);
+            }
+            
+            document.querySelectorAll('.crypto-buy').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const symbol = btn.getAttribute('data-symbol');
+                    switchToBuyTab(symbol);
+                });
+            });
+            
+            document.querySelectorAll('.crypto-sell').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const symbol = btn.getAttribute('data-symbol');
+                    switchToSellTab(symbol);
+                });
+            });
+        }
+
+        function switchToBuyTab(symbol) {
+            switchCryptoTab('buy');
+            cryptoBuySelect.value = symbol;
+            updateBuyConversion();
+            cryptoBuyAmount.focus();
+        }
+
+        function switchToSellTab(symbol) {
+            switchCryptoTab('sell');
+            cryptoSellSelect.value = symbol;
+            updateSellConversion();
+            cryptoSellAmount.focus();
+        }
+
+        function switchCryptoTab(tabId) {
+            cryptoTabs.forEach(tab => {
+                if (tab.getAttribute('data-tab') === tabId) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+            
+            cryptoTabContents.forEach(content => {
+                if (content.id === `${tabId}-tab`) {
+                    content.classList.add('active');
+                } else {
+                    content.classList.remove('active');
+                }
+            });
+        }
+
+        function setupCryptoDepositAddresses() {
+            updateDepositAddress();
+        }
+
+        function updateDepositAddress() {
+            const symbol = cryptoDepositSelect.value;
+            const crypto = userData.crypto[symbol];
+            
+            if (crypto) {
+                cryptoDepositAddress.textContent = crypto.address;
+                
+                let minAmount = '';
+                switch(symbol) {
+                    case 'BTC': minAmount = '0.0001 BTC'; break;
+                    case 'ETH': minAmount = '0.01 ETH'; break;
+                    case 'LTC': minAmount = '0.1 LTC'; break;
+                    case 'XRP': minAmount = '5 XRP'; break;
+                    case 'USDT': minAmount = '10 USDT'; break;
+                }
+                cryptoDepositMin.textContent = minAmount;
+                
+                cryptoDepositQr.innerHTML = `
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(crypto.address)}" alt="${symbol} Deposit Address">
+                `;
+            }
+        }
+
+        function copyDepositAddress() {
+            const address = cryptoDepositAddress.textContent;
+            if (address && address !== 'Select a cryptocurrency to view address') {
+                navigator.clipboard.writeText(address)
+                    .then(() => showToast('Address copied to clipboard'))
+                    .catch(() => showToast('Failed to copy address', 'error'));
+            }
+        }
+
+        function updateBuyConversion() {
+            const symbol = cryptoBuySelect.value;
+            const amount = parseFloat(cryptoBuyAmount.value) || 0;
+            const price = cryptoData[symbol].price;
+            
+            if (price > 0) {
+                const cryptoAmount = amount / price;
+                cryptoBuyConversion.textContent = `≈ ${cryptoAmount.toFixed(8)} ${symbol}`;
+            } else {
+                cryptoBuyConversion.textContent = `≈ 0 ${symbol}`;
+            }
+        }
+
+        function updateSellConversion() {
+            const symbol = cryptoSellSelect.value;
+            const amount = parseFloat(cryptoSellAmount.value) || 0;
+            const price = cryptoData[symbol].price;
+            
+            if (price > 0) {
+                const inrAmount = amount * price;
+                cryptoSellConversion.textContent = `≈ ₹${inrAmount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            } else {
+                cryptoSellConversion.textContent = `≈ ₹0`;
+            }
+        }
+
+        function updateWithdrawInfo() {
+            const symbol = cryptoWithdrawSelect.value;
+            const crypto = userData.crypto[symbol];
+            const balance = crypto ? crypto.balance : 0;
+            
+            cryptoWithdrawConversion.textContent = `Available: ${balance.toFixed(8)} ${symbol}`;
+            
+            let fee = '';
+            switch(symbol) {
+                case 'BTC': fee = '0.0005 BTC'; break;
+                case 'ETH': fee = '0.005 ETH'; break;
+                case 'LTC': fee = '0.01 LTC'; break;
+                case 'XRP': fee = '0.1 XRP'; break;
+                case 'USDT': fee = '10 USDT'; break;
+            }
+            cryptoWithdrawFee.textContent = `≈ ${fee}`;
+        }
+
+        function setMaxWithdraw() {
+            const symbol = cryptoWithdrawSelect.value;
+            const crypto = userData.crypto[symbol];
+            const balance = crypto ? crypto.balance : 0;
+            
+            if (symbol === 'BTC') {
+                cryptoWithdrawAmount.value = (balance - 0.0005).toFixed(8);
+            } else {
+                cryptoWithdrawAmount.value = balance.toFixed(8);
+            }
+        }
+
+        function confirmBuyCrypto() {
+            const symbol = cryptoBuySelect.value;
+            const amount = parseFloat(cryptoBuyAmount.value) || 0;
+            const price = cryptoData[symbol].price;
+            
+            if (!amount || amount <= 0) {
+                showToast('Please enter a valid amount', 'error');
+                return;
+            }
+            
+            const activeAccount = userData.accounts.find(account => account.active);
+            if (amount > activeAccount.balance) {
+                showToast('Insufficient funds', 'error');
+                return;
+            }
+            
+            const cryptoAmount = amount / price;
+            
+            cryptoModalTitle.textContent = 'Confirm Crypto Purchase';
+            cryptoConfirmDetails.innerHTML = `
+                <div style="margin-bottom: 15px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span style="color: var(--gray);">You pay:</span>
+                        <span style="font-weight: 600;">₹${amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span style="color: var(--gray);">You receive:</span>
+                        <span style="font-weight: 600;">${cryptoAmount.toFixed(8)} ${symbol}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span style="color: var(--gray);">Rate:</span>
+                        <span style="font-weight: 600;">1 ${symbol} = ₹${price.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="color: var(--gray);">Fee:</span>
+                        <span style="font-weight: 600;">₹0</span>
+                    </div>
+                </div>
+            `;
+            
+            cryptoConfirmModal.dataset.transactionType = 'buy';
+            cryptoConfirmModal.dataset.symbol = symbol;
+            cryptoConfirmModal.dataset.amount = amount;
+            cryptoConfirmModal.dataset.cryptoAmount = cryptoAmount;
+            
+            if (amount > 5000) {
+                crypto2faGroup.style.display = 'block';
+                crypto2faCode.value = '';
+            } else {
+                crypto2faGroup.style.display = 'none';
+            }
+            
+            cryptoConfirmModal.style.display = 'flex';
+        }
+
+        function confirmSellCrypto() {
+            const symbol = cryptoSellSelect.value;
+            const cryptoAmount = parseFloat(cryptoSellAmount.value) || 0;
+            const crypto = userData.crypto[symbol];
+            const price = cryptoData[symbol].price;
+            
+            if (!cryptoAmount || cryptoAmount <= 0) {
+                showToast('Please enter a valid amount', 'error');
+                return;
+            }
+            
+            if (cryptoAmount > crypto.balance) {
+                showToast(`Insufficient ${symbol} balance`, 'error');
+                return;
+            }
+            
+            const amount = cryptoAmount * price;
+            
+            cryptoModalTitle.textContent = 'Confirm Crypto Sale';
+            cryptoConfirmDetails.innerHTML = `
+                <div style="margin-bottom: 15px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span style="color: var(--gray);">You sell:</span>
+                        <span style="font-weight: 600;">${cryptoAmount.toFixed(8)} ${symbol}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span style="color: var(--gray);">You receive:</span>
+                        <span style="font-weight: 600;">₹${amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span style="color: var(--gray);">Rate:</span>
+                        <span style="font-weight: 600;">1 ${symbol} = ₹${price.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="color: var(--gray);">Fee:</span>
+                        <span style="font-weight: 600;">₹0</span>
+                    </div>
+                </div>
+            `;
+            
+            cryptoConfirmModal.dataset.transactionType = 'sell';
+            cryptoConfirmModal.dataset.symbol = symbol;
+            cryptoConfirmModal.dataset.amount = amount;
+            cryptoConfirmModal.dataset.cryptoAmount = cryptoAmount;
+            
+            if (amount > 5000) {
+                crypto2faGroup.style.display = 'block';
+                crypto2faCode.value = '';
+            } else {
+                crypto2faGroup.style.display = 'none';
+            }
+            
+            cryptoConfirmModal.style.display = 'flex';
+        }
+
+        function confirmWithdrawCrypto() {
+            const symbol = cryptoWithdrawSelect.value;
+            const cryptoAmount = parseFloat(cryptoWithdrawAmount.value) || 0;
+            const address = cryptoWithdrawAddress.value.trim();
+            const crypto = userData.crypto[symbol];
+            const price = cryptoData[symbol].price;
+            
+            if (!cryptoAmount || cryptoAmount <= 0) {
+                showToast('Please enter a valid amount', 'error');
+                return;
+            }
+            
+            if (cryptoAmount > crypto.balance) {
+                showToast(`Insufficient ${symbol} balance`, 'error');
+                return;
+            }
+            
+            if (!address) {
+                showToast('Please enter a valid wallet address', 'error');
+                return;
+            }
+            
+            if (symbol === 'BTC' && !address.startsWith('1') && !address.startsWith('3') && !address.startsWith('bc1')) {
+                showToast('Please enter a valid Bitcoin address', 'error');
+                return;
+            }
+            
+            if (symbol === 'ETH' && !address.startsWith('0x')) {
+                showToast('Please enter a valid Ethereum address', 'error');
+                return;
+            }
+            
+            let fee = 0;
+            switch(symbol) {
+                case 'BTC': fee = 0.0005; break;
+                case 'ETH': fee = 0.005; break;
+                case 'LTC': fee = 0.01; break;
+                case 'XRP': fee = 0.1; break;
+                case 'USDT': fee = 10; break;
+            }
+            
+            cryptoModalTitle.textContent = 'Confirm Crypto Withdrawal';
+            cryptoConfirmDetails.innerHTML = `
+                <div style="margin-bottom: 15px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span style="color: var(--gray);">Send:</span>
+                        <span style="font-weight: 600;">${cryptoAmount.toFixed(8)} ${symbol}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span style="color: var(--gray);">To address:</span>
+                        <span style="font-weight: 600; word-break: break-all; text-align: right; margin-left: 10px;">${address}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span style="color: var(--gray);">Network fee:</span>
+                        <span style="font-weight: 600;">${fee} ${symbol}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="color: var(--gray);">Total:</span>
+                        <span style="font-weight: 600;">${(cryptoAmount + fee).toFixed(8)} ${symbol}</span>
+                    </div>
+                </div>
+                <div style="background-color: var(--dark); padding: 10px; border-radius: 8px; margin-top: 15px; border: 1px solid var(--gray-light);">
+                    <div style="font-size: 13px; color: var(--gray);">Please double-check the withdrawal address. Cryptocurrency transactions cannot be reversed.</div>
+                </div>
+            `;
+            
+            cryptoConfirmModal.dataset.transactionType = 'withdraw';
+            cryptoConfirmModal.dataset.symbol = symbol;
+            cryptoConfirmModal.dataset.amount = cryptoAmount;
+            cryptoConfirmModal.dataset.address = address;
+            cryptoConfirmModal.dataset.fee = fee;
+            
+            crypto2faGroup.style.display = 'block';
+            crypto2faCode.value = '';
+            
+            cryptoConfirmModal.style.display = 'flex';
+        }
+
+        function processCryptoTransaction() {
+            const transactionType = cryptoConfirmModal.dataset.transactionType;
+            const symbol = cryptoConfirmModal.dataset.symbol;
+            const amount = parseFloat(cryptoConfirmModal.dataset.amount);
+            
+            if (crypto2faGroup.style.display === 'block') {
+                const code = crypto2faCode.value.trim();
+                if (!code || code.length !== 6 || !/^\d+$/.test(code)) {
+                    showToast('Please enter a valid 6-digit 2FA code', 'error');
+                    return;
+                }
+            }
+            
+            switch(transactionType) {
+                case 'buy':
+                    processBuyCrypto(
+                        symbol,
+                        amount,
+                        parseFloat(cryptoConfirmModal.dataset.cryptoAmount)
+                    );
+                    break;
+                    
+                case 'sell':
+                    processSellCrypto(
+                        symbol,
+                        parseFloat(cryptoConfirmModal.dataset.cryptoAmount),
+                        amount
+                    );
+                    break;
+                    
+                case 'withdraw':
+                    processWithdrawCrypto(
+                        symbol,
+                        parseFloat(cryptoConfirmModal.dataset.amount),
+                        cryptoConfirmModal.dataset.address,
+                        parseFloat(cryptoConfirmModal.dataset.fee)
+                    );
+                    break;
+            }
+            
+            cryptoConfirmModal.style.display = 'none';
+        }
+
+        function processBuyCrypto(symbol, amount, cryptoAmount) {
+            const activeAccount = userData.accounts.find(account => account.active);
+            activeAccount.balance -= amount;
+            userData.crypto[symbol].balance += cryptoAmount;
+            
+            userData.transactions.unshift({
+                id: `C${Math.floor(1000 + Math.random() * 9000)}`,
+                type: "debit",
+                title: `${symbol} Purchase`,
+                description: `Bought ${cryptoAmount.toFixed(8)} ${symbol}`,
+                amount: amount,
+                date: new Date().toISOString().split('T')[0],
+                status: "completed",
+                category: "crypto"
+            });
+            
+            updateBalances();
+            renderTransactions();
+            renderFullTransactions();
+            renderCryptoWallet();
+            
+            cryptoBuyAmount.value = '';
+            updateBuyConversion();
+            
+            showToast(`Successfully purchased ${cryptoAmount.toFixed(8)} ${symbol}`);
+        }
+
+        function processSellCrypto(symbol, cryptoAmount, amount) {
+            userData.crypto[symbol].balance -= cryptoAmount;
+            const activeAccount = userData.accounts.find(account => account.active);
+            activeAccount.balance += amount;
+            
+            userData.transactions.unshift({
+                id: `C${Math.floor(1000 + Math.random() * 9000)}`,
+                type: "credit",
+                title: `${symbol} Sale`,
+                description: `Sold ${cryptoAmount.toFixed(8)} ${symbol}`,
+                amount: amount,
+                date: new Date().toISOString().split('T')[0],
+                status: "completed",
+                category: "crypto"
+            });
+            
+            updateBalances();
+            renderTransactions();
+            renderFullTransactions();
+            renderCryptoWallet();
+            
+            cryptoSellAmount.value = '';
+            updateSellConversion();
+            
+            showToast(`Successfully sold ${cryptoAmount.toFixed(8)} ${symbol} for ₹${amount.toLocaleString('en-IN')}`);
+        }
+
+        function processWithdrawCrypto(symbol, amount, address, fee) {
+            userData.crypto[symbol].balance -= (amount + fee);
+            
+            userData.transactions.unshift({
+                id: `C${Math.floor(1000 + Math.random() * 9000)}`,
+                type: "debit",
+                title: `${symbol} Withdrawal`,
+                description: `Sent to ${address.substring(0, 6)}...${address.substring(address.length - 4)}`,
+                amount: amount * cryptoData[symbol].price,
+                date: new Date().toISOString().split('T')[0],
+                status: "pending",
+                category: "crypto"
+            });
+            
+            renderTransactions();
+            renderFullTransactions();
+            renderCryptoWallet();
+            
+            cryptoWithdrawAmount.value = '';
+            cryptoWithdrawAddress.value = '';
+            updateWithdrawInfo();
+            
+            showToast(`Withdrawal of ${amount} ${symbol} initiated. It may take some time to process.`);
+        }
+
+        function processDeposit() {
+            const amount = parseFloat(depositAmount.value);
+            const method = document.getElementById('deposit-method').value;
+            const remarks = document.getElementById('deposit-remarks').value;
+            
+            if (!amount || amount <= 0) {
+                showToast('Please enter a valid amount', 'error');
+                return;
+            }
+            
+            const activeAccount = userData.accounts.find(account => account.active);
+            activeAccount.balance += amount;
+            
+            userData.transactions.unshift({
+                id: `T${Math.floor(1000 + Math.random() * 9000)}`,
+                type: "credit",
+                title: "Deposit",
+                description: `Deposit via ${method.charAt(0).toUpperCase() + method.slice(1)}${remarks ? `: ${remarks}` : ''}`,
+                amount: amount,
+                date: new Date().toISOString().split('T')[0],
+                status: "completed",
+                category: "deposit"
+            });
+            
+            updateBalances();
+            renderTransactions();
+            renderFullTransactions();
+            depositModal.style.display = 'none';
+            depositAmount.value = '';
+            
+            showToast(`₹${amount.toLocaleString('en-IN')} deposited successfully!`);
+        }
+
+        function processWithdrawal() {
+            const amount = parseFloat(withdrawAmount.value);
+            const method = document.getElementById('withdraw-method').value;
+            const remarks = document.getElementById('withdraw-remarks').value;
+            
+            if (!amount || amount <= 0) {
+                showToast('Please enter a valid amount', 'error');
+                return;
+            }
+            
+            const activeAccount = userData.accounts.find(account => account.active);
+            if (amount > activeAccount.balance) {
+                showToast('Insufficient funds', 'error');
+                return;
+            }
+            
+            activeAccount.balance -= amount;
+            
+            userData.transactions.unshift({
+                id: `T${Math.floor(1000 + Math.random() * 9000)}`,
+                type: "debit",
+                title: "Withdrawal",
+                description: `Withdrawal via ${method.charAt(0).toUpperCase() + method.slice(1)}${remarks ? `: ${remarks}` : ''}`,
+                amount: amount,
+                date: new Date().toISOString().split('T')[0],
+                status: "completed",
+                category: "withdrawal"
+            });
+            
+            updateBalances();
+            renderTransactions();
+            renderFullTransactions();
+            withdrawModal.style.display = 'none';
+            withdrawAmount.value = '';
+            
+            showToast(`₹${amount.toLocaleString('en-IN')} withdrawn successfully!`);
+        }
+
+        function processTransfer() {
+            const amount = parseFloat(transferAmount.value);
+            const type = document.getElementById('transfer-type').value;
+            const account = document.getElementById('transfer-account').value;
+            const upi = document.getElementById('transfer-upi').value;
+            const remarks = document.getElementById('transfer-remarks').value;
+            
+            if (!amount || amount <= 0) {
+                showToast('Please enter a valid amount', 'error');
+                return;
+            }
+            
+            const activeAccount = userData.accounts.find(account => account.active);
+            if (amount > activeAccount.balance) {
+                showToast('Insufficient funds', 'error');
+                return;
+            }
+            
+            if (type !== 'upi' && !account) {
+                showToast('Please enter recipient account number', 'error');
+                return;
+            }
+            
+            if (type === 'upi' && !upi) {
+                showToast('Please enter UPI ID', 'error');
+                return;
+            }
+            
+            activeAccount.balance -= amount;
+            
+            userData.transactions.unshift({
+                id: `T${Math.floor(1000 + Math.random() * 9000)}`,
+                type: "debit",
+                title: type === 'upi' ? 'UPI Transfer' : 'Bank Transfer',
+                description: type === 'upi' 
+                    ? `To UPI ID: ${upi}${remarks ? ` (${remarks})` : ''}`
+                    : `To Account: ${account}${remarks ? ` (${remarks})` : ''}`,
+                amount: amount,
+                date: new Date().toISOString().split('T')[0],
+                status: "pending",
+                category: "transfer"
+            });
+            
+            updateBalances();
+            renderTransactions();
+            renderFullTransactions();
+            transferModal.style.display = 'none';
+            transferAmount.value = '';
+            document.getElementById('transfer-account').value = '';
+            document.getElementById('transfer-upi').value = '';
+            
+            showToast(`Transfer of ₹${amount.toLocaleString('en-IN')} initiated!`);
+        }
+
+        function processTransferPage() {
+            const amount = parseFloat(document.getElementById('transfer-page-amount').value);
+            const type = document.getElementById('transfer-page-type').value;
+            const account = document.getElementById('transfer-page-account').value;
+            const upi = document.getElementById('transfer-page-upi').value;
+            const remarks = document.getElementById('transfer-page-remarks').value;
+            
+            if (!amount || amount <= 0) {
+                showToast('Please enter a valid amount', 'error');
+                return;
+            }
+            
+            const activeAccount = userData.accounts.find(account => account.active);
+            if (amount > activeAccount.balance) {
+                showToast('Insufficient funds', 'error');
+                return;
+            }
+            
+            if (type !== 'upi' && !account) {
+                showToast('Please enter recipient account number', 'error');
+                return;
+            }
+            
+            if (type === 'upi' && !upi) {
+                showToast('Please enter UPI ID', 'error');
+                return;
+            }
+            
+            activeAccount.balance -= amount;
+            
+            userData.transactions.unshift({
+                id: `T${Math.floor(1000 + Math.random() * 9000)}`,
+                type: "debit",
+                title: type === 'upi' ? 'UPI Transfer' : 'Bank Transfer',
+                description: type === 'upi' 
+                    ? `To UPI ID: ${upi}${remarks ? ` (${remarks})` : ''}`
+                    : `To Account: ${account}${remarks ? ` (${remarks})` : ''}`,
+                amount: amount,
+                date: new Date().toISOString().split('T')[0],
+                status: "pending",
+                category: "transfer"
+            });
+            
+            updateBalances();
+            renderTransactions();
+            renderFullTransactions();
+            document.getElementById('transfer-page-amount').value = '';
+            document.getElementById('transfer-page-account').value = '';
+            document.getElementById('transfer-page-upi').value = '';
+            document.getElementById('transfer-page-remarks').value = '';
+            
+            showToast(`Transfer of ₹${amount.toLocaleString('en-IN')} initiated!`);
+        }
+
+        function showEditProfile() {
+            profileEditForm.classList.add('active');
+            editProfileBtn.style.display = 'none';
+        }
+
+        function saveProfile() {
+            userData.name = editName.value;
+            userData.email = editEmail.value;
+            
+            profileName.textContent = userData.name;
+            profileEmail.textContent = userData.email;
+            
+            profileEditForm.classList.remove('active');
+            editProfileBtn.style.display = 'block';
+            
+            showToast('Profile updated successfully');
+        }
+
+        function cancelEditProfile() {
+            editName.value = userData.name;
+            editEmail.value = userData.email;
+            
+            profileEditForm.classList.remove('active');
+            editProfileBtn.style.display = 'block';
+        }
+
+        function showToast(message, type = 'success') {
+            toastMessage.textContent = message;
+            toastNotification.className = `toast ${type === 'error' ? 'toast-danger' : ''}`;
+            toastNotification.classList.add('show');
+            
+            setTimeout(() => {
+                toastNotification.classList.remove('show');
+            }, 3000);
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-IN', { 
+                day: '2-digit', 
+                month: 'short', 
+                year: 'numeric' 
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
