@@ -380,7 +380,7 @@
         }
 
         .balance-amount {
-            font-size: 32px;
+            font-size: 27px;
             font-weight: 700;
             color: var(--white);
             margin-bottom: 5px;
@@ -1310,6 +1310,9 @@
 <body>
     <div class="container">
         <header>
+            <button class="menu-toggle" id="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
             <div class="logo" id="logo">
                 <img src="https://github.com/ChocoCooper/CashView/raw/refs/heads/main/logo.png" alt="CashView Logo">
                 <h1>Cash<span>View</span></h1>
@@ -1328,7 +1331,10 @@
 
         <div class="dashboard">
             <div class="sidebar" id="sidebar">
-                
+                <div class="menu-header">
+                    <button class="close-btn" id="close-sidebar">&times;</button>
+                    <div class="menu-title">Cash<span>View</span></div>
+                </div>
 
                 <div class="balance-card">
                     <div class="balance-header">
@@ -2042,35 +2048,35 @@
                 name: "Bitcoin", 
                 price: 0, 
                 change24h: 0,
-                icon: "https://cryptologos.cc/logos/bitcoin-btc-logo.png",
+                icon: "https://raw.githubusercontent.com/ChocoCooper/CashView/refs/heads/main/crypto-img/bitcoin-btc-logo.png",
                 color: "var(--btc-orange)"
             },
             ETH: { 
                 name: "Ethereum", 
                 price: 0, 
                 change24h: 0,
-                icon: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+                icon: "https://raw.githubusercontent.com/ChocoCooper/CashView/refs/heads/main/crypto-img/ethereum-eth-logo.png",
                 color: "var(--eth-purple)"
             },
             LTC: { 
                 name: "Litecoin", 
                 price: 0, 
                 change24h: 0,
-                icon: "https://cryptologos.cc/logos/litecoin-ltc-logo.png",
+                icon: "https://raw.githubusercontent.com/ChocoCooper/CashView/refs/heads/main/crypto-img/litecoin-ltc-logo.png",
                 color: "var(--ltc-silver)"
             },
             XRP: { 
                 name: "Ripple", 
                 price: 0, 
                 change24h: 0,
-                icon: "https://cryptologos.cc/logos/xrp-xrp-logo.png",
+                icon: "https://raw.githubusercontent.com/ChocoCooper/CashView/refs/heads/main/crypto-img/xrp-xrp-logo.png",
                 color: "var(--xrp-blue)"
             },
             USDT: { 
                 name: "Tether", 
                 price: 83.5, 
                 change24h: 0.1,
-                icon: "https://cryptologos.cc/logos/tether-usdt-logo.png",
+                icon: "https://raw.githubusercontent.com/ChocoCooper/CashView/refs/heads/main/crypto-img/tether-usdt-logo.png",
                 color: "var(--usdt-green)"
             }
         };
