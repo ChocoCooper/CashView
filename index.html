@@ -1424,16 +1424,17 @@
     display: none !important;
 }
 
-.get-started-page .dashboard,
-.auth-page .dashboard {
-    grid-template-columns: 1fr !important;
-}
-
 /* Hide header on Get Started & Auth pages */
 .get-started-page header,
 .auth-page header {
     display: none !important;
 }
+
+.auth-page .auth-sqidebar,
+.get-started-page .auth-sidebar {
+       display: none !important;
+}
+
     </style>
 </head>
 <body>
@@ -1459,7 +1460,7 @@
         <div class="overlay" id="overlay"></div>
 
         <div class="dashboard">
-            <div class="sidebar" id="sidebar">
+            <div class="sidebar auth-sidebar" id="sidebar">
                 <div class="menu-header">
                     <button class="close-btn" id="close-sidebar">×</button>
                     <div class="menu-title">Cash<span>View</span></div>
