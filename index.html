@@ -11,1435 +11,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/ChocoCooper/CashView/refs/heads/main/favicon.ico">
     <link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/ChocoCooper/CashView/refs/heads/main/apple-touch-icon.png">
-    <style>
-        :root {
-            --primary: #6c5ce7;
-            --primary-dark: #5649c0;
-            --secondary: #fd79a8;
-            --success: #00b894;
-            --warning: #fdcb6e;
-            --danger: #d63031;
-            --light: #2d3436;
-            --lighter: #636e72;
-            --dark: #121212;
-            --darker: #1a1a1a;
-            --gray: #b2bec3;
-            --gray-light: #3d3d3d;
-            --white: #ffffff;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            --border-radius: 12px;
-            --transition: all 0.3s ease;
-            --btc-orange: #f7931a;
-            --eth-purple: #627eea;
-            --ltc-silver: #bebebe;
-            --doge-yellow: #c2a633;
-            --xrp-blue: #27a2db;
-            --usdt-green: #26a17b;
-            --card-bg: #1e1e1e;
-            --body-bg: #121212;
-            --cashview-blue: #9fe8fc;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
-
-        body {
-            background-color: var(--body-bg);
-            color: var(--white);
-            line-height: 1.6;
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-            width: 100%;
-        }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-            margin-bottom: 30px;
-            position: relative;
-            width: 100%;
-            background-color: var(--card-bg);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            padding: 15px 25px;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-        }
-
-        .logo img {
-            height: 36px;
-            width: auto;
-        }
-
-        .logo h1 {
-            font-family: "Lexend", sans-serif;
-            font-size: 24px;
-            color: var(--white);
-            margin-left: 10px;
-        }
-
-        .logo h1 span {
-            color: var(--cashview-blue);
-        }
-
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .profile-pic {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary);
-            overflow: hidden;
-        }
-
-        .profile-pic svg {
-            width: 100%;
-            height: 100%;
-        }
-
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 24px;
-            color: var(--primary);
-            cursor: pointer;
-            z-index: 1001;
-            position: relative;
-        }
-
-        .menu-header {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--gray-light);
-            gap: 10px;
-        }
-
-        .menu-title {
-            font-family: "Lexend", sans-serif;
-            font-size: 30px;
-            font-weight: 600;
-            color: var(--white);
-        }
-
-        .menu-title span {
-            color: var(--cashview-blue);
-        }
-
-        .dashboard {
-            display: grid;
-            grid-template-columns: 280px 1fr;
-            gap: 25px;
-            width: 100%;
-        }
-
-        .sidebar {
-            background-color: var(--card-bg);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            padding: 25px;
-            height: fit-content;
-            transition: var(--transition);
-            position: relative;
-            z-index: 1000;
-        }
-
-        .balance-card {
-            background-color: var(--dark);
-            border-radius: var(--border-radius);
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid var(--gray-light);
-            position: relative;
-            z-index: 1;
-        }
-
-        .balance-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .refresh-btn {
-            background: none;
-            border: none;
-            color: var(--primary);
-            cursor: pointer;
-            font-size: 16px;
-            transition: var(--transition);
-        }
-
-        .refresh-btn:hover {
-            color: var(--primary-dark);
-            transform: rotate(180deg);
-        }
-
-        .nav-menu {
-            list-style: none;
-            margin-top: 10px;
-        }
-
-        .nav-item {
-            margin-bottom: 12px;
-        }
-
-        .nav-link {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 15px;
-            border-radius: 8px;
-            text-decoration: none;
-            color: var(--white);
-            font-weight: 500;
-            transition: var(--transition);
-            position: relative;
-        }
-
-        .nav-link i {
-            width: 20px;
-            text-align: center;
-            flex-shrink: 0;
-            color: var(--gray);
-        }
-
-        .nav-link span {
-            flex-grow: 1;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .nav-link:hover, .nav-link.active {
-            background-color: rgba(108, 92, 231, 0.2);
-            color: var(--primary);
-        }
-
-        .nav-link:hover i, .nav-link.active i {
-            color: var(--primary);
-        }
-
-        .nav-link.active {
-            font-weight: 600;
-        }
-
-        .main-content {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-            width: 100%;
-            overflow: hidden;
-        }
-
-        .page {
-            display: none;
-            width: 100%;
-        }
-
-        .page.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .welcome-card {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            border-radius: var(--border-radius);
-            padding: 25px;
-            box-shadow: var(--shadow);
-            position: relative;
-            overflow: hidden;
-            width: 100%;
-            margin-bottom: 25px;
-        }
-
-        .welcome-card::after {
-            content: '';
-            position: absolute;
-            top: -50px;
-            right: -50px;
-            width: 200px;
-            height: 200px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-        }
-
-        .welcome-card h2 {
-            font-size: 22px;
-            margin-bottom: 10px;
-        }
-
-        .welcome-card p {
-            opacity: 0.9;
-            margin-bottom: 20px;
-            max-width: 60%;
-        }
-
-        .quick-actions {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            margin-bottom: 25px;
-            width: 100%;
-        }
-
-        .action-btn {
-            background-color: var(--card-bg);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            text-decoration: none;
-            color: var(--white);
-            transition: var(--transition);
-            min-width: 0;
-            border: 1px solid var(--gray-light);
-        }
-
-        .action-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-            border-color: var(--primary);
-        }
-
-        .action-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-        }
-
-        .action-btn:nth-child(1) .action-icon {
-            background-color: rgba(0, 184, 148, 0.1);
-            color: var(--success);
-        }
-
-        .action-btn:nth-child(2) .action-icon {
-            background-color: rgba(214, 48, 49, 0.1);
-            color: var(--danger);
-        }
-
-        .action-btn:nth-child(3) .action-icon {
-            background-color: rgba(253, 203, 110, 0.1);
-            color: var(--warning);
-        }
-
-        .action-btn:nth-child(4) .action-icon {
-            background-color: rgba(108, 92, 231, 0.1);
-            color: var(--primary);
-        }
-
-        .action-btn span {
-            font-weight: 600;
-            font-size: 14px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            width: 100%;
-            text-align: center;
-        }
-
-        .balance-amount {
-            font-size: 27px;
-            font-weight: 700;
-            color: var(--white);
-            margin-bottom: 5px;
-        }
-
-        .balance-subtext {
-            color: var(--gray);
-            font-size: 14px;
-        }
-
-        .balance-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .stat-item {
-            background-color: var(--dark);
-            border-radius: 10px;
-            padding: 15px;
-            border: 1px solid var(--gray-light);
-        }
-
-        .stat-label {
-            font-size: 12px;
-            color: var(--gray);
-            margin-bottom: 5px;
-        }
-
-        .stat-value {
-            font-weight: 600;
-            font-size: 16px;
-            color: var(--white);
-        }
-
-        .transactions-section {
-            background-color: var(--card-bg);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            padding: 25px;
-            width: 100%;
-            overflow-x: auto;
-            border: 1px solid var(--gray-light);
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .section-header h3 {
-            font-size: 18px;
-            color: var(--white);
-        }
-
-        .view-all {
-            color: var(--primary);
-            font-size: 14px;
-            font-weight: 600;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            transition: var(--transition);
-        }
-
-        .view-all:hover {
-            color: var(--primary-dark);
-        }
-
-        .transactions-table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0 10px;
-            min-width: 600px;
-        }
-
-        .transactions-table th {
-            text-align: left;
-            padding: 10px 15px;
-            color: var(--gray);
-            font-weight: 500;
-            font-size: 14px;
-        }
-
-        .transaction-row {
-            background-color: var(--dark);
-            border-radius: 10px;
-            transition: var(--transition);
-            border: 1px solid var(--gray-light);
-        }
-
-        .transaction-row:hover {
-            background-color: var(--gray-light);
-        }
-
-        .transaction-row td {
-            padding: 15px;
-            vertical-align: middle;
-        }
-
-        .transaction-details {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-        }
-
-        .transaction-title {
-            font-weight: 600;
-            font-size: 15px;
-            color: var(--white);
-        }
-
-        .transaction-date {
-            font-size: 12px;
-            color: var(--gray);
-        }
-
-        .transaction-amount {
-            font-weight: 600;
-            font-size: 16px;
-        }
-
-        .credit {
-            color: var(--success);
-        }
-
-        .debit {
-            color: var(--danger);
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: 1100;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(3px);
-        }
-
-        .modal-content {
-            background-color: var(--card-bg);
-            border-radius: var(--border-radius);
-            width: 500px;
-            max-width: 95%;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-            animation: modalFadeIn 0.3s ease;
-            max-height: 90vh;
-            overflow-y: auto;
-            border: 1px solid var(--gray-light);
-            margin: 20px;
-        }
-
-        @keyframes modalFadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .modal-header {
-            padding: 20px;
-            border-bottom: 1px solid var(--gray-light);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            background: var(--card-bg);
-            z-index: 1;
-        }
-
-        .modal-header h3 {
-            font-size: 18px;
-            color: var(--white);
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 20px;
-            color: var(--gray);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .close-btn:hover {
-            color: var(--white);
-        }
-
-        #close-sidebar {
-            color: var(--primary);
-            font-size: 30px;
-        }
-
-        #close-sidebar:hover {
-            color: var(--primary-dark);
-        }
-
-        .modal-body {
-            padding: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--white);
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px 15px;
-            background-color: var(--dark);
-            border: 1px solid var(--gray-light);
-            border-radius: 8px;
-            font-size: 14px;
-            transition: var(--transition);
-            color: var(--white);
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
-        }
-
-        .input-group {
-            position: relative;
-        }
-
-        .input-group .form-control {
-            padding-left: 40px;
-        }
-
-        .input-icon {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--gray);
-        }
-
-        .modal-footer {
-            padding: 20px;
-            border-top: 1px solid var(--gray-light);
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            position: sticky;
-            bottom: 0;
-            background: var(--card-bg);
-        }
-
-        .btn {
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: var(--transition);
-            border: none;
-        }
-
-        .btn-primary {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--primary-dark);
-        }
-
-        .btn-outline {
-            background-color: transparent;
-            border: 1px solid var(--gray-light);
-            color: var(--white);
-        }
-
-        .btn-outline:hover {
-            background-color: var(--gray-light);
-        }
-
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background-color: var(--success);
-            color: white;
-            padding: 15px 20px;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            z-index: 1100;
-            transform: translateY(100px);
-            opacity: 0;
-            transition: all 0.3s ease;
-            max-width: 90%;
-        }
-
-        .toast.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .toast i {
-            font-size: 18px;
-        }
-
-        .toast-danger {
-            background-color: var(--danger);
-        }
-
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: 999;
-            display: none;
-        }
-
-        .crypto-card {
-            background-color: var(--card-bg);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            padding: 20px;
-            margin-bottom: 20px;
-            transition: var(--transition);
-            border: 1px solid var(--gray-light);
-        }
-
-        .crypto-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-            border-color: var(--primary);
-        }
-
-        .crypto-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .crypto-name {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .crypto-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 16px;
-        }
-
-        .btc-icon {
-            background-color: var(--btc-orange);
-        }
-
-        .eth-icon {
-            background-color: var(--eth-purple);
-        }
-
-        .ltc-icon {
-            background-color: var(--ltc-silver);
-        }
-
-        .xrp-icon {
-            background-color: var(--xrp-blue);
-        }
-
-        .usdt-icon {
-            background-color: var(--usdt-green);
-        }
-
-        .crypto-price {
-            font-weight: 700;
-            font-size: 18px;
-            color: var(--white);
-        }
-
-        .crypto-change {
-            font-size: 14px;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-weight: 500;
-        }
-
-        .positive-change {
-            background-color: rgba(0, 184, 148, 0.1);
-            color: var(--success);
-        }
-
-        .negative-change {
-            background-color: rgba(214, 48, 49, 0.1);
-            color: var(--danger);
-        }
-
-        .crypto-balance {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-        }
-
-        .crypto-balance-label {
-            font-size: 12px;
-            color: var(--gray);
-        }
-
-        .crypto-balance-value {
-            font-weight: 600;
-            color: var(--white);
-        }
-
-        .crypto-actions {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .crypto-btn {
-            padding: 8px;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: var(--transition);
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-        }
-
-        .crypto-buy {
-            background-color: rgba(0, 184, 148, 0.1);
-            color: var(--success);
-        }
-
-        .crypto-buy:hover {
-            background-color: rgba(0, 184, 148, 0.2);
-        }
-
-        .crypto-sell {
-            background-color: rgba(214, 48, 49, 0.1);
-            color: var(--danger);
-        }
-
-        .crypto-sell:hover {
-            background-color: rgba(214, 48, 49, 0.2);
-        }
-
-        .crypto-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .crypto-address {
-            background-color: var(--dark);
-            border-radius: 8px;
-            padding: 12px;
-            margin-top: 15px;
-            font-size: 13px;
-            word-break: break-all;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            color: var(--white);
-            border: 1px solid var(--gray-light);
-        }
-
-        .copy-btn {
-            background: none;
-            border: none;
-            color: var(--primary);
-            cursor: pointer;
-            margin-left: 10px;
-        }
-
-        .qr-code {
-            width: 120px;
-            height: 120px;
-            margin: 15px auto;
-            background-color: #fff;
-            padding: 10px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid var(--gray-light);
-        }
-
-        .qr-code img {
-            max-width: 100%;
-            max-height: 100%;
-        }
-
-        .crypto-tabs {
-            display: flex;
-            border-bottom: 1px solid var(--gray-light);
-            margin-bottom: 20px;
-            overflow-x: auto;
-            scrollbar-width: none;
-        }
-
-        .crypto-tabs::-webkit-scrollbar {
-            display: none;
-        }
-
-        .crypto-tab {
-            padding: 10px 15px;
-            cursor: pointer;
-            font-weight: 500;
-            color: var(--gray);
-            border-bottom: 2px solid transparent;
-            transition: var(--transition);
-            white-space: nowrap;
-        }
-
-        .crypto-tab.active {
-            color: var(--primary);
-            border-bottom: 2px solid var(--primary);
-        }
-
-        .crypto-tab-content {
-            display: none;
-        }
-
-        .crypto-tab-content.active {
-            display: block;
-        }
-
-        .crypto-modal .modal-content {
-            width: 600px;
-            max-height: 325px;
-            overflow-y: auto;
-            border-radius: 8px;
-        }
-
-        .crypto-amount-group {
-            display: flex;
-            gap: 10px;
-        }
-
-        .crypto-amount-group .form-control {
-            flex: 1;
-        }
-
-        .crypto-conversion {
-            font-size: 13px;
-            color: var(--gray);
-            margin-top: 5px;
-            text-align: right;
-        }
-
-        .page-title {
-            font-size: 24px;
-            margin-bottom: 30px;
-            color: var(--white);
-            margin-top: 10px;
-            margin-left: 15px;
-        }
-
-        .card {
-            background-color: var(--card-bg);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            padding: 25px;
-            margin-bottom: 25px;
-            width: 100%;
-            border: 1px solid var(--gray-light);
-        }
-
-        .filter-section {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            width: 100%;
-        }
-
-        .filter-group {
-            flex: 1;
-            min-width: 200px;
-        }
-
-        .profile-section {
-            display: grid;
-            grid-template-columns: 150px 1fr;
-            gap: 30px;
-            margin-bottom: 20px;
-        }
-
-        .profile-picture {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            background-color: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .profile-picture svg {
-            width: 80%;
-            height: 80%;
-        }
-
-        .info-group {
-            margin-bottom: 15px;
-        }
-
-        .info-label {
-            font-size: 12px;
-            color: var(--gray);
-            margin-bottom: 5px;
-        }
-
-        .info-value {
-            font-weight: 500;
-            color: var(--white);
-        }
-
-        .edit-form {
-            display: none;
-            margin-top: 15px;
-        }
-
-        .edit-form.active {
-            display: block;
-        }
-
-        .transactions-container {
-            display: flex;
-            gap: 15px;
-            overflow-x: auto;
-            padding-bottom: 15px;
-            scrollbar-width: thin;
-            scrollbar-color: var(--primary) var(--dark);
-        }
-
-        .transactions-container::-webkit-scrollbar {
-            height: 8px;
-        }
-
-        .transactions-container::-webkit-scrollbar-track {
-            background: var(--dark);
-            border-radius: 10px;
-        }
-
-        .transactions-container::-webkit-scrollbar-thumb {
-            background-color: var(--primary);
-            border-radius: 10px;
-        }
-
-        .transaction-card {
-            min-width: 280px;
-            background-color: var(--dark);
-            border-radius: var(--border-radius);
-            padding: 15px;
-            border: 1px solid var(--gray-light);
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .transaction-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .transaction-card-title {
-            font-weight: 600;
-            font-size: 15px;
-            color: var(--white);
-        }
-
-        .transaction-card-amount {
-            font-weight: 600;
-            font-size: 16px;
-        }
-
-        .transaction-card-details {
-            font-size: 13px;
-            color: var(--gray);
-        }
-
-        .transaction-card-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 10px;
-        }
-
-        .transaction-card-date {
-            font-size: 12px;
-            color: var(--gray);
-        }
-
-        .auth-container {
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        .auth-card {
-            background-color: var(--card-bg);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            padding: 30px;
-            border: 1px solid var(--gray-light);
-        }
-
-        .auth-title {
-            font-size: 24px;
-            margin-bottom: 20px;
-            color: var(--white);
-            text-align: center;
-        }
-
-        .auth-footer {
-            margin-top: 20px;
-            text-align: center;
-            font-size: 14px;
-            color: var(--gray);
-        }
-
-        .auth-link {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .auth-link:hover {
-            text-decoration: underline;
-        }
-
-        .empty-message {
-            text-align: center;
-            padding: 40px;
-            color: var(--gray);
-            font-size: 16px;
-        }
-
-        .auth-tabs {
-            display: flex;
-            border-bottom: 1px solid var(--gray-light);
-            margin-bottom: 20px;
-        }
-
-        .auth-tab {
-            flex: 1;
-            padding: 10px;
-            text-align: center;
-            cursor: pointer;
-            font-weight: 500;
-            color: var(--gray);
-            transition: var(--transition);
-        }
-
-        .auth-tab.active {
-            color: var(--primary);
-            border-bottom: 2px solid var(--primary);
-        }
-
-        .auth-tab-content {
-            display: none;
-        }
-
-        .auth-tab-content.active {
-            display: block;
-        }
-
-        .get-started-container {
-            max-width: 600px;
-            margin: 100px auto;
-            text-align: center;
-        }
-
-        .get-started-card {
-            background-color: var(--card-bg);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            padding: 40px;
-            border: 1px solid var(--gray-light);
-        }
-
-        .get-started-title {
-            font-size: 32px;
-            margin-bottom: 20px;
-            color: var(--white);
-        }
-
-        .get-started-subtitle {
-            font-size: 16px;
-            color: var(--gray);
-            margin-bottom: 30px;
-        }
-
-        .get-started-logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 30px;
-        }
-
-        .get-started-logo img {
-            height: 50px;
-            width: auto;
-        }
-
-        .get-started-logo h1 {
-            font-family: "Lexend", sans-serif;
-            font-size: 28px;
-            color: var(--white);
-            margin-left: 10px;
-        }
-
-        .get-started-logo h1 span {
-            color: var(--cashview-blue);
-        }
-
-        .get-started-actions {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-        }
-
-        /* Hide elements on auth pages */
-        .auth-page header,
-        .auth-page .sidebar,
-        .get-started-page header,
-        .get-started-page .sidebar {
-            display: none;
-        }
-
-        .auth-page .dashboard,
-        .get-started-page .dashboard {
-            grid-template-columns: 1fr;
-        }
-
-        @media (max-width: 1200px) {
-            .container {
-                padding: 15px;
-            }
-            
-            .dashboard {
-                grid-template-columns: 1fr;
-            }
-
-            .quick-actions {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .balance-stats {
-                grid-template-columns: 1fr;
-            }
-
-            .menu-toggle {
-                display: block;
-                z-index: 1001;
-            }
-
-            .sidebar {
-                position: fixed;
-                top: 0;
-                left: -300px;
-                width: 280px;
-                height: 100vh;
-                z-index: 1000;
-                overflow-y: auto;
-                transition: var(--transition);
-                padding: 25px;
-            }
-
-            .sidebar.active {
-                left: 0;
-            }
-
-            .overlay.active {
-                display: block;
-            }
-
-            .welcome-card p {
-                max-width: 100%;
-            }
-
-            .profile-section {
-                grid-template-columns: 1fr;
-            }
-
-            .crypto-grid {
-                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            }
-
-            .get-started-actions {
-                flex-direction: column;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .quick-actions {
-                grid-template-columns: 1fr;
-            }
-
-            header {
-                flex-direction: row;
-                align-items: center;
-                gap: 15px;
-            }
-
-            .transaction-row td {
-                padding: 10px;
-            }
-
-            .transaction-title {
-                font-size: 14px;
-            }
-
-            .transaction-amount {
-                font-size: 14px;
-            }
-            
-            .profile-picture {
-                width: 100px;
-                height: 100px;
-                margin: 0 auto;
-            }
-
-            .crypto-modal .modal-content {
-                width: 95%;
-            }
-
-            .transaction-card {
-                min-width: 240px;
-            }
-
-            .get-started-title {
-                font-size: 24px;
-            }
-
-            .get-started-logo h1 {
-                font-size: 22px;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .container {
-                padding: 10px;
-            }
-
-            .welcome-card h2 {
-                font-size: 20px;
-            }
-
-            .balance-amount {
-                font-size: 28px;
-            }
-
-            .transactions-table th {
-                padding: 8px 10px;
-                font-size: 13px;
-            }
-
-            .transaction-row td {
-                padding: 8px;
-            }
-
-            .filter-section {
-                flex-direction: column;
-            }
-
-            .filter-group {
-                min-width: 100%;
-            }
-            
-            .modal-content {
-                width: 100%;
-                max-width: 100%;
-                border-radius: 0;
-                height: 100vh;
-                max-height: 100vh;
-            }
-            
-            .modal-header, .modal-footer {
-                position: relative;
-            }
-
-            .crypto-actions {
-                grid-template-columns: 1fr;
-            }
-
-            .transaction-card {
-                min-width: 200px;
-            }
-
-            .get-started-container {
-                margin: 50px auto;
-                padding: 20px;
-            }
-
-            .get-started-title {
-                font-size: 20px;
-            }
-        }
-/* Hide sidebar and adjust layout on Get Started & Auth pages */
-.get-started-page .sidebar,
-.auth-page .sidebar {
-    display: none !important;
-}
-
-/* Hide header on Get Started & Auth pages */
-.get-started-page header,
-.auth-page header {
-    display: none !important;
-}
-
-.auth-page .auth-sqidebar,
-.get-started-page .auth-sidebar {
-       display: none !important;
-}
-
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <header>
+        <header id="header">
             <button class="menu-toggle" id="menu-toggle" aria-label="Toggle sidebar">
                 <i class="fas fa-bars"></i>
             </button>
@@ -1460,16 +36,16 @@
         <div class="overlay" id="overlay"></div>
 
         <div class="dashboard">
-            <div class="sidebar auth-sidebar" id="sidebar">
+            <div class="sidebar" id="sidebar">
                 <div class="menu-header">
-                    <button class="close-btn" id="close-sidebar">×</button>
+                    <button class="close-btn" id="close-sidebar" aria-label="Close sidebar">×</button>
                     <div class="menu-title">Cash<span>View</span></div>
                 </div>
 
                 <div class="balance-card">
                     <div class="balance-header">
                         <div class="balance-subtext">Available Balance</div>
-                        <button class="refresh-btn" id="refresh-balance">
+                        <button class="refresh-btn" id="refresh-balance" aria-label="Refresh balance">
                             <i class="fas fa-sync-alt"></i>
                         </button>
                     </div>
@@ -1573,14 +149,14 @@
                                     <label class="form-label">Email</label>
                                     <div class="input-group">
                                         <i class="fas fa-envelope input-icon"></i>
-                                        <input type="email" class="form-control" id="login-email" placeholder="Enter your email">
+                                        <input type="email" class="form-control" id="login-email" placeholder="Enter your email" aria-label="Email">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Password</label>
                                     <div class="input-group">
                                         <i class="fas fa-lock input-icon"></i>
-                                        <input type="password" class="form-control" id="login-password" placeholder="Enter your password">
+                                        <input type="password" class="form-control" id="login-password" placeholder="Enter your password" aria-label="Password">
                                     </div>
                                 </div>
                                 <button class="btn btn-primary" id="login-btn">Login</button>
@@ -1593,28 +169,28 @@
                                     <label class="form-label">Username</label>
                                     <div class="input-group">
                                         <i class="fas fa-user input-icon"></i>
-                                        <input type="text" class="form-control" id="register-username" placeholder="Enter your username">
+                                        <input type="text" class="form-control" id="register-username" placeholder="Enter your username" aria-label="Username">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Email</label>
                                     <div class="input-group">
                                         <i class="fas fa-envelope input-icon"></i>
-                                        <input type="email" class="form-control" id="register-email" placeholder="Enter your email">
+                                        <input type="email" class="form-control" id="register-email" placeholder="Enter your email" aria-label="Email">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Password</label>
                                     <div class="input-group">
                                         <i class="fas fa-lock input-icon"></i>
-                                        <input type="password" class="form-control" id="register-password" placeholder="Enter your password">
+                                        <input type="password" class="form-control" id="register-password" placeholder="Enter your password" aria-label="Password">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Confirm Password</label>
                                     <div class="input-group">
                                         <i class="fas fa-lock input-icon"></i>
-                                        <input type="password" class="form-control" id="register-confirm-password" placeholder="Confirm your password">
+                                        <input type="password" class="form-control" id="register-confirm-password" placeholder="Confirm your password" aria-label="Confirm Password">
                                     </div>
                                 </div>
                                 <button class="btn btn-primary" id="register-btn">Register</button>
@@ -1710,7 +286,7 @@
                         <div class="filter-section">
                             <div class="filter-group">
                                 <label class="form-label">Date Range</label>
-                                <select class="form-control" id="date-range">
+                                <select class="form-control" id="date-range" aria-label="Date Range">
                                     <option value="30">Last 30 days</option>
                                     <option value="90">Last 3 months</option>
                                     <option value="180">Last 6 months</option>
@@ -1719,7 +295,7 @@
                             </div>
                             <div class="filter-group">
                                 <label class="form-label">Transaction Type</label>
-                                <select class="form-control" id="transaction-type">
+                                <select class="form-control" id="transaction-type" aria-label="Transaction Type">
                                     <option value="all">All Transactions</option>
                                     <option value="credit">Credits</option>
                                     <option value="debit">Debits</option>
@@ -1730,7 +306,7 @@
                             </div>
                             <div class="filter-group">
                                 <label class="form-label">Amount Range</label>
-                                <select class="form-control" id="amount-range">
+                                <select class="form-control" id="amount-range" aria-label="Amount Range">
                                     <option value="all">Any amount</option>
                                     <option value="1000">Less than ₹1,000</option>
                                     <option value="5000">₹1,000 - ₹5,000</option>
@@ -1752,13 +328,13 @@
                     <div class="card">
                         <div class="form-group">
                             <label class="form-label">From Account</label>
-                            <select class="form-control">
-                                <option>Savings Account (XXXX-7890)</option>
+                            <select class="form-control" id="deposit-page-account" aria-label="From Account">
+                                <option value="XXXX-7890">Savings Account (XXXX-7890)</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label class="form-label">Deposit Method</label>
-                            <select class="form-control" id="deposit-page-method">
+                            <select class="form-control" id="deposit-page-method" aria-label="Deposit Method">
                                 <option value="cash">Cash Deposit</option>
                                 <option value="cheque">Cheque Deposit</option>
                                 <option value="transfer">Bank Transfer</option>
@@ -1769,12 +345,12 @@
                             <label class="form-label">Amount (₹)</label>
                             <div class="input-group">
                                 <i class="fas fa-indian-rupee-sign input-icon"></i>
-                                <input type="number" class="form-control" id="deposit-page-amount" placeholder="Enter amount">
+                                <input type="number" class="form-control" id="deposit-page-amount" placeholder="Enter amount" min="1" step="0.01" aria-label="Deposit Amount">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="form-label">Remarks (Optional)</label>
-                            <input type="text" class="form-control" id="deposit-page-remarks" placeholder="e.g. Salary, Gift, etc.">
+                            <input type="text" class="form-control" id="deposit-page-remarks" placeholder="e.g. Salary, Gift, etc." maxlength="100" aria-label="Remarks">
                         </div>
                         <button class="btn btn-primary" id="deposit-page-submit">Deposit</button>
                     </div>
@@ -1787,13 +363,13 @@
                     <div class="card">
                         <div class="form-group">
                             <label class="form-label">From Account</label>
-                            <select class="form-control">
-                                <option>Savings Account (XXXX-7890)</option>
+                            <select class="form-control" id="withdraw-page-account" aria-label="From Account">
+                                <option value="XXXX-7890">Savings Account (XXXX-7890)</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label class="form-label">Withdrawal Method</label>
-                            <select class="form-control" id="withdraw-page-method">
+                            <select class="form-control" id="withdraw-page-method" aria-label="Withdrawal Method">
                                 <option value="atm">ATM Withdrawal</option>
                                 <option value="branch">Branch Withdrawal</option>
                                 <option value="transfer">Bank Transfer</option>
@@ -1804,12 +380,12 @@
                             <label class="form-label">Amount (₹)</label>
                             <div class="input-group">
                                 <i class="fas fa-indian-rupee-sign input-icon"></i>
-                                <input type="number" class="form-control" id="withdraw-page-amount" placeholder="Enter amount">
+                                <input type="number" class="form-control" id="withdraw-page-amount" placeholder="Enter amount" min="1" step="0.01" aria-label="Withdrawal Amount">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="form-label">Remarks (Optional)</label>
-                            <input type="text" class="form-control" id="withdraw-page-remarks" placeholder="e.g. Shopping, Bills, etc.">
+                            <input type="text" class="form-control" id="withdraw-page-remarks" placeholder="e.g. Shopping, Bills, etc." maxlength="100" aria-label="Remarks">
                         </div>
                         <button class="btn btn-primary" id="withdraw-page-submit">Withdraw</button>
                     </div>
@@ -1822,13 +398,13 @@
                     <div class="card">
                         <div class="form-group">
                             <label class="form-label">From Account</label>
-                            <select class="form-control">
-                                <option>Savings Account (XXXX-7890)</option>
+                            <select class="form-control" id="transfer-page-account" aria-label="From Account">
+                                <option value="XXXX-7890">Savings Account (XXXX-7890)</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label class="form-label">Transfer Type</label>
-                            <select class="form-control" id="transfer-page-type">
+                            <select class="form-control" id="transfer-page-type" aria-label="Transfer Type">
                                 <option value="internal">Within CashView Bank</option>
                                 <option value="external">Other Bank (NEFT/IMPS/RTGS)</option>
                                 <option value="upi">UPI Transfer</option>
@@ -1836,22 +412,22 @@
                         </div>
                         <div class="form-group" id="transfer-page-account-group">
                             <label class="form-label">Account Number</label>
-                            <input type="text" class="form-control" id="transfer-page-account" placeholder="Enter account number">
+                            <input type="text" class="form-control" id="transfer-page-account-number" placeholder="Enter account number" aria-label="Account Number">
                         </div>
                         <div class="form-group" id="transfer-page-upi-group" style="display: none;">
                             <label class="form-label">UPI ID</label>
-                            <input type="text" class="form-control" id="transfer-page-upi" placeholder="Enter UPI ID">
+                            <input type="text" class="form-control" id="transfer-page-upi" placeholder="Enter UPI ID" aria-label="UPI ID">
                         </div>
                         <div class="form-group">
                             <label class="form-label">Amount (₹)</label>
                             <div class="input-group">
                                 <i class="fas fa-indian-rupee-sign input-icon"></i>
-                                <input type="number" class="form-control" id="transfer-page-amount" placeholder="Enter amount">
+                                <input type="number" class="form-control" id="transfer-page-amount" placeholder="Enter amount" min="1" step="0.01" aria-label="Transfer Amount">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="form-label">Remarks (Optional)</label>
-                            <input type="text" class="form-control" id="transfer-page-remarks" placeholder="e.g. Loan repayment, Gift, etc.">
+                            <input type="text" class="form-control" id="transfer-page-remarks" placeholder="e.g. Loan repayment, Gift, etc." maxlength="100" aria-label="Remarks">
                         </div>
                         <button class="btn btn-primary" id="transfer-page-submit">Transfer Money</button>
                     </div>
@@ -1878,7 +454,7 @@
                         <div class="crypto-tab-content" id="buy-tab">
                             <div class="form-group">
                                 <label class="form-label">Select Cryptocurrency</label>
-                                <select class="form-control" id="buy-crypto-select">
+                                <select class="form-control" id="buy-crypto-select" aria-label="Select Cryptocurrency">
                                     <option value="BTC">Bitcoin (BTC)</option>
                                     <option value="ETH">Ethereum (ETH)</option>
                                     <option value="LTC">Litecoin (LTC)</option>
@@ -1890,7 +466,7 @@
                                 <label class="form-label">Amount in ₹</label>
                                 <div class="input-group">
                                     <i class="fas fa-indian-rupee-sign input-icon"></i>
-                                    <input type="number" class="form-control" id="buy-crypto-amount" placeholder="Enter amount">
+                                    <input type="number" class="form-control" id="buy-crypto-amount" placeholder="Enter amount" min="1" step="0.01" aria-label="Amount in INR">
                                 </div>
                                 <div class="crypto-conversion" id="buy-crypto-conversion">
                                     ≈ 0 BTC
@@ -1898,7 +474,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Payment Method</label>
-                                <select class="form-control">
+                                <select class="form-control" aria-label="Payment Method">
                                     <option>Bank Transfer</option>
                                     <option>Credit/Debit Card</option>
                                     <option>UPI Payment</option>
@@ -1910,7 +486,7 @@
                         <div class="crypto-tab-content" id="sell-tab">
                             <div class="form-group">
                                 <label class="form-label">Select Cryptocurrency</label>
-                                <select class="form-control" id="sell-crypto-select">
+                                <select class="form-control" id="sell-crypto-select" aria-label="Select Cryptocurrency">
                                     <option value="BTC">Bitcoin (BTC)</option>
                                     <option value="ETH">Ethereum (ETH)</option>
                                     <option value="LTC">Litecoin (LTC)</option>
@@ -1922,7 +498,7 @@
                                 <label class="form-label">Amount to Sell</label>
                                 <div class="input-group">
                                     <i class="fas fa-coins input-icon"></i>
-                                    <input type="number" class="form-control" id="sell-crypto-amount" placeholder="Enter amount">
+                                    <input type="number" class="form-control" id="sell-crypto-amount" placeholder="Enter amount" min="0.0001" step="0.0001" aria-label="Amount to Sell">
                                 </div>
                                 <div class="crypto-conversion" id="sell-crypto-conversion">
                                     ≈ ₹0
@@ -1930,7 +506,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Deposit To</label>
-                                <select class="form-control">
+                                <select class="form-control" aria-label="Deposit To">
                                     <option>Savings Account (XXXX-7890)</option>
                                 </select>
                             </div>
@@ -1940,7 +516,7 @@
                         <div class="crypto-tab-content" id="deposit-tab">
                             <div class="form-group">
                                 <label class="form-label">Select Cryptocurrency</label>
-                                <select class="form-control" id="deposit-crypto-select">
+                                <select class="form-control" id="deposit-crypto-select" aria-label="Select Cryptocurrency">
                                     <option value="BTC">Bitcoin (BTC)</option>
                                     <option value="ETH">Ethereum (ETH)</option>
                                     <option value="LTC">Litecoin (LTC)</option>
@@ -1952,7 +528,7 @@
                                 <label class="form-label">Deposit Address</label>
                                 <div class="crypto-address">
                                     <span id="deposit-crypto-address">3FZbgi29cpjq2GjdwV8eyHuJJnkLtktZc5</span>
-                                    <button class="copy-btn" id="copy-deposit-address">
+                                    <button class="copy-btn" id="copy-deposit-address" aria-label="Copy Deposit Address">
                                         <i class="fas fa-copy"></i>
                                     </button>
                                 </div>
@@ -1974,7 +550,7 @@
                         <div class="crypto-tab-content" id="withdraw-tab">
                             <div class="form-group">
                                 <label class="form-label">Select Cryptocurrency</label>
-                                <select class="form-control" id="withdraw-crypto-select">
+                                <select class="form-control" id="withdraw-crypto-select" aria-label="Select Cryptocurrency">
                                     <option value="BTC">Bitcoin (BTC)</option>
                                     <option value="ETH">Ethereum (ETH)</option>
                                     <option value="LTC">Litecoin (LTC)</option>
@@ -1984,16 +560,16 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Withdrawal Address</label>
-                                <input type="text" class="form-control" id="withdraw-crypto-address" placeholder="Enter external wallet address">
+                                <input type="text" class="form-control" id="withdraw-crypto-address" placeholder="Enter external wallet address" aria-label="Withdrawal Address">
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Amount</label>
                                 <div class="crypto-amount-group">
                                     <div class="input-group" style="flex: 2;">
                                         <i class="fas fa-coins input-icon"></i>
-                                        <input type="number" class="form-control" id="withdraw-crypto-amount" placeholder="Enter amount">
+                                        <input type="number" class="form-control" id="withdraw-crypto-amount" placeholder="Enter amount" min="0.0001" step="0.0001" aria-label="Withdrawal Amount">
                                     </div>
-                                    <button class="btn btn-outline" style="flex: 1;" id="withdraw-max-btn">Max</button>
+                                    <button class="btn btn-outline" style="flex: 1;" id="withdraw-max-btn" aria-label="Use Maximum Amount">Max</button>
                                 </div>
                                 <div class="crypto-conversion" id="withdraw-crypto-conversion">
                                     Available: 0.0425 BTC
@@ -2039,11 +615,11 @@
                         <div class="edit-form" id="profile-edit-form">
                             <div class="form-group">
                                 <label class="form-label">Username</label>
-                                <input type="text" class="form-control" id="edit-name" value="John Doe">
+                                <input type="text" class="form-control" id="edit-name" value="John Doe" aria-label="Username">
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Email</label>
-                                <input type="email" class="form-control" id="edit-email" value="john.doe@example.com">
+                                <input type="email" class="form-control" id="edit-email" value="john.doe@example.com" aria-label="Email">
                             </div>
                             <button class="btn btn-primary" id="save-profile-btn">Save Changes</button>
                             <button class="btn btn-outline" id="cancel-edit-btn">Cancel</button>
@@ -2115,18 +691,18 @@
     </div>
 
     <!-- Crypto Confirm Modal -->
-    <div class="modal crypto-modal" id="crypto-confirm-modal" role="dialog" aria-labelledby="crypto-modal-title">
+    <div class="modal crypto-modal" id="crypto-confirm-modal" role="dialog" aria-labelledby="crypto-modal-title" aria-modal="true">
         <div class="modal-content">
             <div class="modal-header">
                 <h3 id="crypto-modal-title">Confirm Transaction</h3>
-                <button class="close-btn" id="close-crypto-confirm">×</button>
+                <button class="close-btn" id="close-crypto-confirm" aria-label="Close modal">×</button>
             </div>
             <div class="modal-body">
                 <div id="crypto-confirm-details">
                 </div>
                 <div class="form-group" id="crypto-2fa-group" style="display: none;">
                     <label class="form-label">2FA Code</label>
-                    <input type="text" class="form-control" id="crypto-2fa-code" placeholder="Enter 6-digit code from authenticator">
+                    <input type="text" class="form-control" id="crypto-2fa-code" placeholder="Enter 6-digit code from authenticator" aria-label="2FA Code">
                 </div>
             </div>
             <div class="modal-footer">
@@ -2142,982 +718,6 @@
         <span id="toast-message">Transaction completed successfully!</span>
     </div>
 
-    <script>
-        // User Data with multiple accounts
-        const userData = {
-            name: "Guest",
-            email: "",
-            accounts: [
-                {
-                    type: "Savings",
-                    number: "XXXX-7890",
-                    balance: 700000.00,
-                    currency: "INR",
-                    active: true
-                }
-            ],
-            crypto: {
-                BTC: { balance: 0.0425, address: "3FZbgi29cpjq2GjdwV8eyHuJJnkLtktZc5" },
-                ETH: { balance: 1.25, address: "0x71C7656EC7ab88b098defB751B7401B5f6d8976F" },
-                LTC: { balance: 5.6, address: "LRMtb18YZTq7UJ9Y4rUjQ1Z2vXnsZ3JHsK" },
-                XRP: { balance: 320, address: "rPdvC6ccq8hCdPKSPJkPmyZ4Mi1oG2FFkT" },
-                USDT: { balance: 500, address: "0x55d398326f99059fF775485246999027B3197955" }
-            },
-            transactions: [
-                {
-                    id: "T1001",
-                    type: "credit",
-                    title: "Salary Credit",
-                    description: "From XYZ Corp to XXXX-7890",
-                    amount: 45000.00,
-                    date: "2023-06-01",
-                    category: "salary"
-                },
-                {
-                    id: "T1002",
-                    type: "debit",
-                    title: "Electricity Bill",
-                    description: "BSES Rajdhani Bill Payment",
-                    amount: 1850.00,
-                    date: "2023-05-28",
-                    category: "bill"
-                },
-                {
-                    id: "T1003",
-                    type: "debit",
-                    title: "Grocery Shopping",
-                    description: "Big Bazaar - Weekend shopping",
-                    amount: 3250.50,
-                    date: "2023-05-27",
-                    category: "shopping"
-                },
-                {
-                    id: "T1004",
-                    type: "credit",
-                    title: "Interest Credit",
-                    description: "Interest on XXXX-7890",
-                    amount: 542.50,
-                    date: "2023-05-25",
-                    category: "interest"
-                },
-                {
-                    id: "T1005",
-                    type: "debit",
-                    title: "Credit Card Payment",
-                    description: "HDFC Bank Card XXXX-1234",
-                    amount: 12500.00,
-                    date: "2023-05-20",
-                    category: "payment"
-                },
-                {
-                    id: "T1006",
-                    type: "debit",
-                    title: "Rent Payment",
-                    description: "To XXXX-4321",
-                    amount: 15000.00,
-                    date: "2023-05-15",
-                    category: "rent"
-                },
-                {
-                    id: "T1007",
-                    type: "credit",
-                    title: "Freelance Payment",
-                    description: "From Tech Solutions Inc",
-                    amount: 25000.00,
-                    date: "2023-05-10",
-                    category: "income"
-                },
-                {
-                    id: "T1008",
-                    type: "debit",
-                    title: "Dining Out",
-                    description: "The Great Kabab Factory",
-                    amount: 1850.00,
-                    date: "2023-05-08",
-                    category: "food"
-                },
-                {
-                    id: "C1001",
-                    type: "debit",
-                    title: "Bitcoin Purchase",
-                    description: "BTC Buy via CashView Wallet",
-                    amount: 50000.00,
-                    date: "2023-05-05",
-                    category: "crypto"
-                }
-            ],
-        };
-
-        // Crypto Data
-        const cryptoData = {
-            BTC: {
-                name: "Bitcoin",
-                price: 0,
-                change24h: 0,
-                icon: '<i class="fab fa-bitcoin"></i>',
-                color: "var(--btc-orange)"
-            },
-            ETH: {
-                name: "Ethereum",
-                price: 0,
-                change24h: 0,
-                icon: '<i class="fab fa-ethereum"></i>',
-                color: "var(--eth-purple)"
-            },
-            LTC: {
-                name: "Litecoin",
-                price: 0,
-                change24h: 0,
-                icon: '<i class="fas fa-coins"></i>',
-                color: "var(--ltc-silver)"
-            },
-            XRP: {
-                name: "Ripple",
-                price: 0,
-                change24h: 0,
-                icon: '<i class="fas fa-water"></i>',
-                color: "var(--xrp-blue)"
-            },
-            USDT: {
-                name: "Tether",
-                price: 83.50,
-                change24h: 0,
-                icon: '<i class="fas fa-dollar-sign"></i>',
-                color: "var(--usdt-green)"
-            }
-        };
-
-        // DOM Elements
-        const menuToggle = document.getElementById('menu-toggle');
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('overlay');
-        const closeSidebar = document.getElementById('close-sidebar');
-        const navLinks = document.querySelectorAll('.nav-link');
-        const currentBalance = document.getElementById('current-balance');
-        const mainBalance = document.getElementById('main-balance');
-        const refreshBalance = document.getElementById('refresh-balance');
-        const transactionsList = document.getElementById('transactions-list');
-        const fullTransactionsList = document.getElementById('full-transactions-list');
-        const dateRangeFilter = document.getElementById('date-range');
-        const transactionTypeFilter = document.getElementById('transaction-type');
-        const amountRangeFilter = document.getElementById('amount-range');
-        const depositBtn = document.getElementById('deposit-btn');
-        const withdrawBtn = document.getElementById('withdraw-btn');
-        const quickTransferBtn = document.getElementById('quick-transfer-btn');
-        const cryptoBtn = document.getElementById('crypto-btn');
-        const viewAllTransactions = document.getElementById('view-all-transactions');
-        const cryptoWallet = document.getElementById('crypto-wallet');
-        const cryptoTabs = document.querySelectorAll('.crypto-tab');
-        const cryptoTabContents = document.querySelectorAll('.crypto-tab-content');
-        const buyCryptoSelect = document.getElementById('buy-crypto-select');
-        const buyCryptoAmount = document.getElementById('buy-crypto-amount');
-        const buyCryptoConversion = document.getElementById('buy-crypto-conversion');
-        const buyCryptoBtn = document.getElementById('buy-crypto-btn');
-        const sellCryptoSelect = document.getElementById('sell-crypto-select');
-        const sellCryptoAmount = document.getElementById('sell-crypto-amount');
-        const sellCryptoConversion = document.getElementById('sell-crypto-conversion');
-        const sellCryptoBtn = document.getElementById('sell-crypto-btn');
-        const withdrawCryptoSelect = document.getElementById('withdraw-crypto-select');
-        const withdrawCryptoAddress = document.getElementById('withdraw-crypto-address');
-        const withdrawCryptoAmount = document.getElementById('withdraw-crypto-amount');
-        const withdrawMaxBtn = document.getElementById('withdraw-max-btn');
-        const withdrawCryptoBtn = document.getElementById('withdraw-crypto-btn');
-        const depositCryptoSelect = document.getElementById('deposit-crypto-select');
-        const depositCryptoAddress = document.getElementById('deposit-crypto-address');
-        const depositQrCode = document.getElementById('deposit-qr-code');
-        const copyDepositAddress = document.getElementById('copy-deposit-address');
-        const cryptoConfirmModal = document.getElementById('crypto-confirm-modal');
-        const cryptoConfirmDetails = document.getElementById('crypto-confirm-details');
-        const crypto2faGroup = document.getElementById('crypto-2fa-group');
-        const crypto2faCode = document.getElementById('crypto-2fa-code');
-        const confirmCryptoTransaction = document.getElementById('confirm-crypto-transaction');
-        const cancelCryptoConfirm = document.getElementById('cancel-crypto-confirm');
-        const closeCryptoConfirm = document.getElementById('close-crypto-confirm');
-        const toastNotification = document.getElementById('toast-notification');
-        const toastMessage = document.getElementById('toast-message');
-        const profileName = document.getElementById('profile-name');
-        const profileEmail = document.getElementById('profile-email');
-        const editProfileBtn = document.getElementById('edit-profile-btn');
-        const profileEditForm = document.getElementById('profile-edit-form');
-        const editName = document.getElementById('edit-name');
-        const editEmail = document.getElementById('edit-email');
-        const saveProfileBtn = document.getElementById('save-profile-btn');
-        const cancelEditBtn = document.getElementById('cancel-edit-btn');
-        const getStartedLoginBtn = document.getElementById('get-started-login-btn');
-        const getStartedRegisterBtn = document.getElementById('get-started-register-btn');
-        const authTabs = document.querySelectorAll('.auth-tab');
-        const authTabContents = document.querySelectorAll('.auth-tab-content');
-        const loginBtn = document.getElementById('login-btn');
-        const registerBtn = document.getElementById('register-btn');
-        const loginEmail = document.getElementById('login-email');
-        const loginPassword = document.getElementById('login-password');
-        const registerUsername = document.getElementById('register-username');
-        const registerEmail = document.getElementById('register-email');
-        const registerPassword = document.getElementById('register-password');
-        const registerConfirmPassword = document.getElementById('register-confirm-password');
-        const switchToLogin = document.getElementById('switch-to-login');
-        const logoutLink = document.getElementById('logout-link');
-
-        // Authentication State
-        let isAuthenticated = false;
-        let currentUser = null;
-
-        // Initialize Users from localStorage
-        let users = JSON.parse(localStorage.getItem('users')) || [];
-
-        // Pages
-        const pages = {
-            'get-started': document.getElementById('get-started-page'),
-            'auth': document.getElementById('auth-page'),
-            'dashboard': document.getElementById('dashboard-page'),
-            'transactions': document.getElementById('transactions-page'),
-            'deposit': document.getElementById('deposit-page'),
-            'withdraw': document.getElementById('withdraw-page'),
-            'transfer': document.getElementById('transfer-page'),
-            'crypto': document.getElementById('crypto-page'),
-            'profile': document.getElementById('profile-page'),
-            'support': document.getElementById('support-page')
-        };
-
-        // Check Authentication on Load
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedUser = JSON.parse(localStorage.getItem('currentUser'));
-            if (savedUser && users.some(u => u.email === savedUser.email && u.password === savedUser.password)) {
-                isAuthenticated = true;
-                currentUser = savedUser;
-                userData.name = currentUser.username;
-                userData.email = currentUser.email;
-                profileName.textContent = userData.name;
-                profileEmail.textContent = userData.email;
-                editName.value = userData.name;
-                editEmail.value = userData.email;
-                navigateTo('dashboard');
-            } else {
-                navigateTo('get-started');
-            }
-            updateBalances();
-            renderRecentTransactions();
-            renderCryptoWallet();
-            fetchCryptoPrices();
-
-            // Hide menu toggle and close button on desktop
-            if (window.innerWidth >= 1200) {
-                menuToggle.style.display = 'none';
-                closeSidebar.style.display = 'none';
-            }
-        });
-
-        // Navigation
-        function navigateTo(pageId) {
-            const protectedPages = ['dashboard', 'transactions', 'deposit', 'withdraw', 'transfer', 'crypto', 'profile', 'support'];
-            if (protectedPages.includes(pageId) && !isAuthenticated) {
-                showToast('Please log in to access this page', 'error');
-                navigateTo('auth');
-                return;
-            }
-            
-            Object.values(pages).forEach(page => {
-                page.classList.remove('active');
-                // Remove page-specific classes
-                page.classList.remove('get-started-page', 'auth-page');
-            });
-            
-            pages[pageId].classList.add('active');
-            
-            // Add page-specific classes
-            if (pageId === 'get-started') {
-                pages[pageId].classList.add('get-started-page');
-            } else if (pageId === 'auth') {
-                pages[pageId].classList.add('auth-page');
-            }
-            
-            navLinks.forEach(link => link.classList.remove('active'));
-            const activeLink = document.querySelector(`.nav-link[data-page="${pageId}"]`);
-            if (activeLink) activeLink.classList.add('active');
-            toggleSidebar(false);
-            if (pageId === 'transactions') {
-                renderFilteredTransactions();
-            }
-        }
-
-        // Sidebar Toggle
-        function toggleSidebar(show = null) {
-            const isActive = sidebar.classList.contains('active');
-            sidebar.classList.toggle('active', show !== null ? show : !isActive);
-            overlay.classList.toggle('active', show !== null ? show : !isActive);
-        }
-
-        menuToggle.addEventListener('click', () => toggleSidebar(true));
-        closeSidebar.addEventListener('click', () => toggleSidebar(false));
-        overlay.addEventListener('click', () => toggleSidebar(false));
-
-        // Navigation Links
-        navLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const pageId = link.getAttribute('data-page');
-                if (pageId === 'logout') {
-                    handleLogout();
-                } else {
-                    navigateTo(pageId);
-                }
-            });
-            link.setAttribute('tabindex', '0');
-            link.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    const pageId = link.getAttribute('data-page');
-                    if (pageId === 'logout') {
-                        handleLogout();
-                    } else {
-                        navigateTo(pageId);
-                    }
-                }
-            });
-        });
-
-        // Get Started Buttons
-        getStartedLoginBtn.addEventListener('click', () => {
-            navigateTo('auth');
-            document.querySelector('.auth-tab[data-tab="login"]').click();
-        });
-
-        getStartedRegisterBtn.addEventListener('click', () => {
-            navigateTo('auth');
-            document.querySelector('.auth-tab[data-tab="register"]').click();
-        });
-
-        // Logout
-        function handleLogout() {
-            isAuthenticated = false;
-            currentUser = null;
-            localStorage.removeItem('currentUser');
-            userData.name = "Guest";
-            userData.email = "";
-            profileName.textContent = "Guest";
-            profileEmail.textContent = "";
-            showToast('Logged out successfully');
-            navigateTo('get-started');
-        }
-
-        logoutLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            handleLogout();
-        });
-
-        // Auth Tabs
-        authTabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                authTabs.forEach(t => t.classList.remove('active'));
-                authTabContents.forEach(c => c.classList.remove('active'));
-                tab.classList.add('active');
-                document.getElementById(`${tab.getAttribute('data-tab')}-tab`).classList.add('active');
-            });
-        });
-
-        switchToLogin.addEventListener('click', (e) => {
-            e.preventDefault();
-            authTabs.forEach(t => t.classList.remove('active'));
-            authTabContents.forEach(c => c.classList.remove('active'));
-            document.querySelector('.auth-tab[data-tab="login"]').classList.add('active');
-            document.getElementById('login-tab').classList.add('active');
-        });
-
-        // Register
-        registerBtn.addEventListener('click', () => {
-            const username = registerUsername.value.trim();
-            const email = registerEmail.value.trim();
-            const password = registerPassword.value;
-            const confirmPassword = registerConfirmPassword.value;
-
-            if (!username || !email || !password || !confirmPassword) {
-                showToast('Please fill all fields', 'error');
-                return;
-            }
-            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                showToast('Invalid email format', 'error');
-                return;
-            }
-            if (password !== confirmPassword) {
-                showToast('Passwords do not match', 'error');
-                return;
-            }
-            if (users.some(u => u.email === email)) {
-                showToast('Email already registered', 'error');
-                return;
-            }
-
-            const newUser = { username, email, password };
-            users.push(newUser);
-            localStorage.setItem('users', JSON.stringify(users));
-            showToast('Registration successful! Please log in.');
-            authTabs.forEach(t => t.classList.remove('active'));
-            authTabContents.forEach(c => c.classList.remove('active'));
-            document.querySelector('.auth-tab[data-tab="login"]').classList.add('active');
-            document.getElementById('login-tab').classList.add('active');
-            registerUsername.value = '';
-            registerEmail.value = '';
-            registerPassword.value = '';
-            registerConfirmPassword.value = '';
-        });
-
-        // Login
-        loginBtn.addEventListener('click', () => {
-            const email = loginEmail.value.trim();
-            const password = loginPassword.value;
-
-            if (!email || !password) {
-                showToast('Please fill all fields', 'error');
-                return;
-            }
-
-            const user = users.find(u => u.email === email && u.password === password);
-            if (!user) {
-                showToast('Invalid email or password', 'error');
-                return;
-            }
-
-            isAuthenticated = true;
-            currentUser = user;
-            localStorage.setItem('currentUser', JSON.stringify(user));
-            userData.name = user.username;
-            userData.email = user.email;
-            profileName.textContent = userData.name;
-            profileEmail.textContent = userData.email;
-            editName.value = userData.name;
-            editEmail.value = userData.email;
-            showToast('Login successful');
-            navigateTo('dashboard');
-            loginEmail.value = '';
-            loginPassword.value = '';
-        });
-
-        // Update Balances
-        function updateBalances() {
-            const activeAccount = userData.accounts.find(account => account.active);
-            let fiatBalance = activeAccount ? activeAccount.balance : 0;
-            let cryptoBalance = 0;
-
-            for (const [symbol, crypto] of Object.entries(userData.crypto)) {
-                const price = cryptoData[symbol].price || 0;
-                cryptoBalance += crypto.balance * price;
-            }
-
-            const totalBalance = fiatBalance + cryptoBalance;
-            currentBalance.textContent = totalBalance.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            mainBalance.textContent = totalBalance.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        }
-
-        refreshBalance.addEventListener('click', () => {
-            updateBalances();
-            showToast('Balance refreshed');
-        });
-
-        // Render Recent Transactions
-        function renderRecentTransactions() {
-            transactionsList.innerHTML = '';
-            const recentTransactions = userData.transactions.slice(0, 5);
-            if (recentTransactions.length === 0) {
-                transactionsList.innerHTML = '<div class="empty-message">No recent transactions</div>';
-                return;
-            }
-            recentTransactions.forEach(transaction => {
-                const card = document.createElement('div');
-                card.className = 'transaction-card';
-                card.innerHTML = `
-                    <div class="transaction-card-header">
-                        <div class="transaction-card-title">${transaction.title}</div>
-                        <div class="transaction-card-amount ${transaction.type === 'credit' ? 'credit' : 'debit'}">
-                            ${transaction.type === 'credit' ? '+' : '-'}₹${transaction.amount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
-                        </div>
-                    </div>
-                    <div class="transaction-card-details">${transaction.description}</div>
-                    <div class="transaction-card-footer">
-                        <div class="transaction-card-date">${new Date(transaction.date).toLocaleDateString()}</div>
-                    </div>
-                `;
-                transactionsList.appendChild(card);
-            });
-        }
-
-        // Render Filtered Transactions
-        let cachedFilteredTransactions = userData.transactions;
-
-        function filterTransactions() {
-            const dateRange = dateRangeFilter.value;
-            const transactionType = transactionTypeFilter.value;
-            const amountRange = amountRangeFilter.value;
-
-            cachedFilteredTransactions = userData.transactions.filter(transaction => {
-                const transactionDate = new Date(transaction.date);
-                const today = new Date();
-                let dateMatch = true;
-                if (dateRange !== 'all') {
-                    const days = parseInt(dateRange);
-                    const cutoffDate = new Date(today.setDate(today.getDate() - days));
-                    dateMatch = transactionDate >= cutoffDate;
-                }
-
-                const typeMatch = transactionType === 'all' || transaction.category === transactionType || (transactionType === 'credit' && transaction.type === 'credit') || (transactionType === 'debit' && transaction.type === 'debit');
-                let amountMatch = true;
-                if (amountRange !== 'all') {
-                    if (amountRange === '1000') amountMatch = transaction.amount < 1000;
-                    else if (amountRange === '5000') amountMatch = transaction.amount >= 1000 && transaction.amount <= 5000;
-                    else if (amountRange === '5001') amountMatch = transaction.amount > 5000;
-                }
-
-                return dateMatch && typeMatch && amountMatch;
-            });
-
-            renderFilteredTransactions();
-        }
-
-        function renderFilteredTransactions() {
-            fullTransactionsList.innerHTML = '';
-            if (cachedFilteredTransactions.length === 0) {
-                fullTransactionsList.innerHTML = '<div class="empty-message">No transactions match your filters</div>';
-                return;
-            }
-            cachedFilteredTransactions.forEach(transaction => {
-                const card = document.createElement('div');
-                card.className = 'transaction-card';
-                card.innerHTML = `
-                    <div class="transaction-card-header">
-                        <div class="transaction-card-title">${transaction.title}</div>
-                        <div class="transaction-card-amount ${transaction.type === 'credit' ? 'credit' : 'debit'}">
-                            ${transaction.type === 'credit' ? '+' : '-'}₹${transaction.amount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
-                        </div>
-                    </div>
-                    <div class="transaction-card-details">${transaction.description}</div>
-                    <div class="transaction-card-footer">
-                        <div class="transaction-card-date">${new Date(transaction.date).toLocaleDateString()}</div>
-                    </div>
-                `;
-                fullTransactionsList.appendChild(card);
-            });
-        }
-
-        dateRangeFilter.addEventListener('change', filterTransactions);
-        transactionTypeFilter.addEventListener('change', filterTransactions);
-        amountRangeFilter.addEventListener('change', filterTransactions);
-        viewAllTransactions.addEventListener('click', (e) => {
-            e.preventDefault();
-            navigateTo('transactions');
-        });
-
-        // Quick Actions
-        depositBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            navigateTo('deposit');
-        });
-        withdrawBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            navigateTo('withdraw');
-        });
-        quickTransferBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            navigateTo('transfer');
-        });
-        cryptoBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            navigateTo('crypto');
-        });
-
-        // Crypto Wallet
-        async function fetchCryptoPrices(maxRetries = 3) {
-            for (let attempt = 1; attempt <= maxRetries; attempt++) {
-                try {
-                    const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,litecoin,ripple,tether&vs_currencies=inr&include_24hr_change=true');
-                    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-                    const data = await response.json();
-                    cryptoData.BTC.price = data.bitcoin.inr || 5000000;
-                    cryptoData.BTC.change24h = data.bitcoin.inr_24h_change || 0;
-                    cryptoData.ETH.price = data.ethereum.inr || 200000;
-                    cryptoData.ETH.change24h = data.ethereum.inr_24h_change || 0;
-                    cryptoData.LTC.price = data.litecoin.inr || 7000;
-                    cryptoData.LTC.change24h = data.litecoin.inr_24h_change || 0;
-                    cryptoData.XRP.price = data.ripple.inr || 40;
-                    cryptoData.XRP.change24h = data.ripple.inr_24h_change || 0;
-                    cryptoData.USDT.price = data.tether.inr || 83.50;
-                    cryptoData.USDT.change24h = data.tether.inr_24h_change || 0;
-                    renderCryptoWallet();
-                    updateBalances();
-                    return;
-                } catch (error) {
-                    console.error(`Attempt ${attempt} failed:`, error);
-                    if (attempt === maxRetries) {
-                        showToast('Failed to fetch crypto prices', 'error');
-                        renderCryptoWallet();
-                    }
-                    await new Promise(resolve => setTimeout(resolve, 2000 * attempt));
-                }
-            }
-        }
-
-        function renderCryptoWallet() {
-            cryptoWallet.innerHTML = '';
-            if (Object.values(cryptoData).every(c => c.price === 0)) {
-                cryptoWallet.innerHTML = '<div class="empty-message">Loading crypto prices...</div>';
-                return;
-            }
-            for (const [symbol, data] of Object.entries(cryptoData)) {
-                const userCrypto = userData.crypto[symbol];
-                const card = document.createElement('div');
-                card.className = 'crypto-card';
-                card.dataset.symbol = symbol;
-                card.innerHTML = `
-                    <div class="crypto-header">
-                        <div class="crypto-name">
-                            <div class="crypto-icon ${symbol.toLowerCase()}-icon">${data.icon}</div>
-                            <div>
-                                <div class="crypto-title">${data.name}</div>
-                                <div class="crypto-symbol">${symbol}</div>
-                            </div>
-                        </div>
-                        <div class="crypto-price">₹${data.price.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</div>
-                    </div>
-                    <div class="crypto-balance">
-                        <div class="crypto-balance-label">Balance</div>
-                        <div class="crypto-balance-value">${userCrypto.balance.toFixed(4)} ${symbol}</div>
-                    </div>
-                    <div class="crypto-balance">
-                        <div class="crypto-balance-label">Value</div>
-                        <div class="crypto-balance-value">₹${(userCrypto.balance * data.price).toLocaleString('en-IN', { minimumFractionDigits: 2 })}</div>
-                    </div>
-                    <div class="crypto-address">
-                        <span>${userCrypto.address}</span>
-                        <button class="copy-btn" data-address="${userCrypto.address}">
-                            <i class="fas fa-copy"></i>
-                        </button>
-                    </div>
-                    <div class="crypto-actions">
-                        <button class="crypto-btn crypto-buy" data-symbol="${symbol}">Buy</button>
-                        <button class="crypto-btn crypto-sell" data-symbol="${symbol}">Sell</button>
-                    </div>
-                `;
-                cryptoWallet.appendChild(card);
-            }
-            // Add copy address functionality
-            document.querySelectorAll('.copy-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    navigator.clipboard.writeText(btn.dataset.address).then(() => {
-                        showToast('Address copied to clipboard');
-                    });
-                });
-            });
-            // Add buy/sell button listeners
-            document.querySelectorAll('.crypto-buy').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const symbol = btn.dataset.symbol;
-                    buyCryptoSelect.value = symbol;
-                    updateCryptoConversion('buy');
-                    cryptoTabs.forEach(t => t.classList.remove('active'));
-                    cryptoTabContents.forEach(c => c.classList.remove('active'));
-                    document.querySelector('.crypto-tab[data-tab="buy"]').classList.add('active');
-                    document.getElementById('buy-tab').classList.add('active');
-                });
-            });
-            document.querySelectorAll('.crypto-sell').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const symbol = btn.dataset.symbol;
-                    sellCryptoSelect.value = symbol;
-                    updateCryptoConversion('sell');
-                    cryptoTabs.forEach(t => t.classList.remove('active'));
-                    cryptoTabContents.forEach(c => c.classList.remove('active'));
-                    document.querySelector('.crypto-tab[data-tab="sell"]').classList.add('active');
-                    document.getElementById('sell-tab').classList.add('active');
-                });
-            });
-        }
-
-        // Crypto Tabs
-        cryptoTabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                cryptoTabs.forEach(t => t.classList.remove('active'));
-                cryptoTabContents.forEach(c => c.classList.remove('active'));
-                tab.classList.add('active');
-                document.getElementById(`${tab.getAttribute('data-tab')}-tab`).classList.add('active');
-                if (tab.getAttribute('data-tab') === 'deposit') {
-                    updateDepositAddress();
-                }
-            });
-        });
-
-        // Update Crypto Conversion
-        function updateCryptoConversion(type) {
-            if (type === 'buy') {
-                const symbol = buyCryptoSelect.value;
-                const amount = parseFloat(buyCryptoAmount.value) || 0;
-                const price = cryptoData[symbol].price || 1;
-                const cryptoAmount = amount / price;
-                buyCryptoConversion.textContent = `≈ ${cryptoAmount.toFixed(6)} ${symbol}`;
-            } else if (type === 'sell') {
-                const symbol = sellCryptoSelect.value;
-                const amount = parseFloat(sellCryptoAmount.value) || 0;
-                const price = cryptoData[symbol].price || 1;
-                const fiatAmount = amount * price;
-                sellCryptoConversion.textContent = `≈ ₹${fiatAmount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
-            }
-        }
-
-        buyCryptoSelect.addEventListener('change', () => updateCryptoConversion('buy'));
-        buyCryptoAmount.addEventListener('input', () => updateCryptoConversion('buy'));
-        sellCryptoSelect.addEventListener('change', () => updateCryptoConversion('sell'));
-        sellCryptoAmount.addEventListener('input', () => updateCryptoConversion('sell'));
-
-        // Buy Crypto
-        buyCryptoBtn.addEventListener('click', () => {
-            const symbol = buyCryptoSelect.value;
-            const amount = parseFloat(buyCryptoAmount.value);
-            if (!amount || amount <= 0) {
-                showToast('Please enter a valid amount', 'error');
-                return;
-            }
-            const price = cryptoData[symbol].price || 1;
-            const cryptoAmount = amount / price;
-            const activeAccount = userData.accounts.find(a => a.active);
-            if (activeAccount.balance < amount) {
-                showToast('Insufficient fiat balance', 'error');
-                return;
-            }
-            cryptoConfirmDetails.innerHTML = `
-                <p><strong>Buy:</strong> ${cryptoAmount.toFixed(6)} ${symbol}</p>
-                <p><strong>Amount:</strong> ₹${amount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</p>
-                <p><strong>From:</strong> Savings Account (XXXX-7890)</p>
-            `;
-            crypto2faGroup.style.display = 'block';
-            cryptoConfirmModal.style.display = 'flex';
-            confirmCryptoTransaction.dataset.type = 'buy';
-            confirmCryptoTransaction.dataset.symbol = symbol;
-            confirmCryptoTransaction.dataset.amount = cryptoAmount;
-            confirmCryptoTransaction.dataset.fiatAmount = amount;
-        });
-
-        // Sell Crypto
-        sellCryptoBtn.addEventListener('click', () => {
-            const symbol = sellCryptoSelect.value;
-            const amount = parseFloat(sellCryptoAmount.value);
-            if (!amount || amount <= 0) {
-                showToast('Please enter a valid amount', 'error');
-                return;
-            }
-            if (userData.crypto[symbol].balance < amount) {
-                showToast('Insufficient crypto balance', 'error');
-                return;
-            }
-            const price = cryptoData[symbol].price || 1;
-            const fiatAmount = amount * price;
-            cryptoConfirmDetails.innerHTML = `
-                <p><strong>Sell:</strong> ${amount.toFixed(6)} ${symbol}</p>
-                <p><strong>Amount:</strong> ₹${fiatAmount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</p>
-                <p><strong>To:</strong> Savings Account (XXXX-7890)</p>
-            `;
-            crypto2faGroup.style.display = 'block';
-            cryptoConfirmModal.style.display = 'flex';
-            confirmCryptoTransaction.dataset.type = 'sell';
-            confirmCryptoTransaction.dataset.symbol = symbol;
-            confirmCryptoTransaction.dataset.amount = amount;
-            confirmCryptoTransaction.dataset.fiatAmount = fiatAmount;
-        });
-
-        // Withdraw Crypto
-        withdrawCryptoBtn.addEventListener('click', () => {
-            const symbol = withdrawCryptoSelect.value;
-            const address = withdrawCryptoAddress.value.trim();
-            const amount = parseFloat(withdrawCryptoAmount.value);
-            if (!address) {
-                showToast('Please enter a withdrawal address', 'error');
-                return;
-            }
-            if (!amount || amount <= 0) {
-                showToast('Please enter a valid amount', 'error');
-                return;
-            }
-            if (userData.crypto[symbol].balance < amount) {
-                showToast('Insufficient crypto balance', 'error');
-                return;
-            }
-            cryptoConfirmDetails.innerHTML = `
-                <p><strong>Withdraw:</strong> ${amount.toFixed(6)} ${symbol}</p>
-                <p><strong>To Address:</strong> ${address}</p>
-                <p><strong>Network Fee:</strong> 0.0005 ${symbol}</p>
-            `;
-            crypto2faGroup.style.display = 'block';
-            cryptoConfirmModal.style.display = 'flex';
-            confirmCryptoTransaction.dataset.type = 'withdraw';
-            confirmCryptoTransaction.dataset.symbol = symbol;
-            confirmCryptoTransaction.dataset.amount = amount;
-            confirmCryptoTransaction.dataset.address = address;
-        });
-
-        withdrawMaxBtn.addEventListener('click', () => {
-            const symbol = withdrawCryptoSelect.value;
-            withdrawCryptoAmount.value = userData.crypto[symbol].balance;
-            updateCryptoConversion('withdraw');
-        });
-
-        // Update Deposit Address
-        function updateDepositAddress() {
-            const symbol = depositCryptoSelect.value;
-            const address = userData.crypto[symbol].address;
-            depositCryptoAddress.textContent = address;
-            copyDepositAddress.dataset.address = address;
-            depositQrCode.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${address}" alt="${symbol} Deposit Address">`;
-        }
-
-        depositCryptoSelect.addEventListener('change', updateDepositAddress);
-        copyDepositAddress.addEventListener('click', () => {
-            navigator.clipboard.writeText(copyDepositAddress.dataset.address).then(() => {
-                showToast('Address copied to clipboard');
-            });
-        });
-
-        // Process Crypto Transaction
-        confirmCryptoTransaction.addEventListener('click', () => {
-            const code = crypto2faCode.value.trim();
-            if (crypto2faGroup.style.display === 'block') {
-                if (!code || code.length !== 6 || !/^\d+$/.test(code)) {
-                    showToast('Please enter a valid 6-digit 2FA code', 'error');
-                    return;
-                }
-                // Mock 2FA validation
-                if (code !== "123456") {
-                    showToast('Invalid 2FA code', 'error');
-                    return;
-                }
-            }
-
-            const type = confirmCryptoTransaction.dataset.type;
-            const symbol = confirmCryptoTransaction.dataset.symbol;
-            const amount = parseFloat(confirmCryptoTransaction.dataset.amount);
-            const fiatAmount = parseFloat(confirmCryptoTransaction.dataset.fiatAmount);
-            const address = confirmCryptoTransaction.dataset.address;
-
-            const activeAccount = userData.accounts.find(a => a.active);
-            if (type === 'buy') {
-                activeAccount.balance -= fiatAmount;
-                userData.crypto[symbol].balance += amount;
-                userData.transactions.push({
-                    id: `C${Date.now()}`,
-                    type: 'debit',
-                    title: `${symbol} Purchase`,
-                    description: `Bought ${amount.toFixed(6)} ${symbol}`,
-                    amount: fiatAmount,
-                    date: new Date().toISOString().split('T')[0],
-                    category: 'crypto'
-                });
-                showToast(`Successfully bought ${amount.toFixed(6)} ${symbol}`);
-            } else if (type === 'sell') {
-                userData.crypto[symbol].balance -= amount;
-                activeAccount.balance += fiatAmount;
-                userData.transactions.push({
-                    id: `C${Date.now()}`,
-                    type: 'credit',
-                    title: `${symbol} Sale`,
-                    description: `Sold ${amount.toFixed(6)} ${symbol}`,
-                    amount: fiatAmount,
-                    date: new Date().toISOString().split('T')[0],
-                    category: 'crypto'
-                });
-                showToast(`Successfully sold ${amount.toFixed(6)} ${symbol}`);
-            } else if (type === 'withdraw') {
-                userData.crypto[symbol].balance -= amount;
-                userData.transactions.push({
-                    id: `C${Date.now()}`,
-                    type: 'debit',
-                    title: `${symbol} Withdrawal`,
-                    description: `Withdrawn to ${address}`,
-                    amount: amount * cryptoData[symbol].price,
-                    date: new Date().toISOString().split('T')[0],
-                    category: 'crypto'
-                });
-                showToast(`Successfully withdrawn ${amount.toFixed(6)} ${symbol}`);
-            }
-
-            updateBalances();
-            renderCryptoWallet();
-            renderRecentTransactions();
-            cryptoConfirmModal.style.display = 'none';
-            crypto2faCode.value = '';
-            buyCryptoAmount.value = '';
-            sellCryptoAmount.value = '';
-            withdrawCryptoAmount.value = '';
-            withdrawCryptoAddress.value = '';
-        });
-
-        cancelCryptoConfirm.addEventListener('click', () => {
-            cryptoConfirmModal.style.display = 'none';
-            crypto2faCode.value = '';
-        });
-        closeCryptoConfirm.addEventListener('click', () => {
-            cryptoConfirmModal.style.display = 'none';
-            crypto2faCode.value = '';
-        });
-
-        // Toast Notification
-        function showToast(message, type = 'success') {
-            toastMessage.textContent = message;
-            toastNotification.className = `toast ${type === 'error' ? 'toast-danger' : ''}`;
-            toastNotification.classList.add('show');
-            setTimeout(() => {
-                toastNotification.classList.remove('show');
-            }, 3000);
-        }
-
-        // Profile Editing
-        editProfileBtn.addEventListener('click', () => {
-            profileEditForm.classList.add('active');
-            editProfileBtn.style.display = 'none';
-        });
-
-        saveProfileBtn.addEventListener('click', () => {
-            const newName = editName.value.trim();
-            const newEmail = editEmail.value.trim();
-            if (!newName || !newEmail) {
-                showToast('Please fill all fields', 'error');
-                return;
-            }
-            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail)) {
-                showToast('Invalid email format', 'error');
-                return;
-            }
-            if (newEmail !== userData.email && users.some(u => u.email === newEmail)) {
-                showToast('Email already in use', 'error');
-                return;
-            }
-
-            userData.name = newName;
-            userData.email = newEmail;
-            profileName.textContent = newName;
-            profileEmail.textContent = newEmail;
-            currentUser.username = newName;
-            currentUser.email = newEmail;
-            users = users.map(u => u.email === currentUser.email ? currentUser : u);
-            localStorage.setItem('users', JSON.stringify(users));
-            localStorage.setItem('currentUser', JSON.stringify(currentUser));
-            profileEditForm.classList.remove('active');
-            editProfileBtn.style.display = 'block';
-            showToast('Profile updated successfully');
-        });
-
-        cancelEditBtn.addEventListener('click', () => {
-            editName.value = userData.name;
-            editEmail.value = userData.email;
-            profileEditForm.classList.remove('active');
-            editProfileBtn.style.display = 'block';
-        });
-
-        // Window resize handler to toggle menu toggle visibility
-        window.addEventListener('resize', () => {
-            if (window.innerWidth >= 1200) {
-                menuToggle.style.display = 'none';
-                closeSidebar.style.display = 'none';
-                toggleSidebar(false);
-            } else {
-                menuToggle.style.display = 'block';
-                closeSidebar.style.display = 'block';
-            }
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
