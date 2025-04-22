@@ -1418,6 +1418,22 @@
                 font-size: 20px;
             }
         }
+/* Hide sidebar and adjust layout on Get Started & Auth pages */
+.get-started-page .sidebar,
+.auth-page .sidebar {
+    display: none !important;
+}
+
+.get-started-page .dashboard,
+.auth-page .dashboard {
+    grid-template-columns: 1fr !important;
+}
+
+/* Hide header on Get Started & Auth pages */
+.get-started-page header,
+.auth-page header {
+    display: none !important;
+}
     </style>
 </head>
 <body>
