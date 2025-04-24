@@ -50,6 +50,7 @@
                         </button>
                     </div>
                     <div class="balance-amount">₹<span id="current-balance">7,00,000.00</span></div>
+                    <div class="loading-spinner" id="balance-spinner"></div>
                 </div>
 
                 <ul class="nav-menu">
@@ -460,6 +461,7 @@
                                     <option value="LTC">Litecoin (LTC)</option>
                                     <option value="XRP">Ripple (XRP)</option>
                                     <option value="USDT">Tether (USDT)</option>
+                                    <option value="BNB">Binance Coin (BNB)</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -474,13 +476,14 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Payment Method</label>
-                                <select class="form-control" aria-label="Payment Method">
-                                    <option>Bank Transfer</option>
-                                    <option>Credit/Debit Card</option>
-                                    <option>UPI Payment</option>
+                                <select class="form-control" id="buy-payment-method" aria-label="Payment Method">
+                                    <option value="bank">Bank Transfer</option>
+                                    <option value="card">Credit/Debit Card</option>
+                                    <option value="upi">UPI Payment</option>
                                 </select>
                             </div>
                             <button class="btn btn-primary" id="buy-crypto-btn">Buy Crypto</button>
+                            <div class="loading-spinner" id="buy-crypto-spinner"></div>
                         </div>
 
                         <div class="crypto-tab-content" id="sell-tab">
@@ -492,6 +495,7 @@
                                     <option value="LTC">Litecoin (LTC)</option>
                                     <option value="XRP">Ripple (XRP)</option>
                                     <option value="USDT">Tether (USDT)</option>
+                                    <option value="BNB">Binance Coin (BNB)</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -506,11 +510,12 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Deposit To</label>
-                                <select class="form-control" aria-label="Deposit To">
-                                    <option>Savings Account (XXXX-7890)</option>
+                                <select class="form-control" id="sell-deposit-account" aria-label="Deposit To">
+                                    <option value="XXXX-7890">Savings Account (XXXX-7890)</option>
                                 </select>
                             </div>
                             <button class="btn btn-primary" id="sell-crypto-btn">Sell Crypto</button>
+                            <div class="loading-spinner" id="sell-crypto-spinner"></div>
                         </div>
 
                         <div class="crypto-tab-content" id="deposit-tab">
@@ -522,7 +527,15 @@
                                     <option value="LTC">Litecoin (LTC)</option>
                                     <option value="XRP">Ripple (XRP)</option>
                                     <option value="USDT">Tether (USDT)</option>
+                                    <option value="BNB">Binance Coin (BNB)</option>
                                 </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Amount to Deposit</label>
+                                <div class="input-group">
+                                    <i class="fas fa-coins input-icon"></i>
+                                    <input type="number" class="form-control" id="deposit-crypto-amount" placeholder="Enter amount" min="0.0001" step="0.0001" aria-label="Deposit Amount">
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Deposit Address</label>
@@ -542,6 +555,8 @@
                                     <span id="deposit-min-amount">0.0001 BTC</span>
                                 </div>
                             </div>
+                            <button class="btn btn-primary" id="deposit-crypto-btn">Confirm Deposit</button>
+                            <div class="loading-spinner" id="deposit-crypto-spinner"></div>
                             <div style="background-color: rgba(108, 92, 231, 0.1); padding: 10px; border-radius: 8px; margin-top: 15px; color: var(--primary); font-size: 14px;">
                                 <i class="fas fa-info-circle"></i> Send only the selected cryptocurrency to this address. Sending other assets may result in permanent loss.
                             </div>
@@ -556,6 +571,7 @@
                                     <option value="LTC">Litecoin (LTC)</option>
                                     <option value="XRP">Ripple (XRP)</option>
                                     <option value="USDT">Tether (USDT)</option>
+                                    <option value="BNB">Binance Coin (BNB)</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -582,6 +598,7 @@
                                 </div>
                             </div>
                             <button class="btn btn-primary" id="withdraw-crypto-btn">Withdraw Crypto</button>
+                            <div class="loading-spinner" id="withdraw-crypto-spinner"></div>
                         </div>
                     </div>
                 </div>
@@ -600,13 +617,13 @@
                             </div>
                             <div class="profile-info">
                                 <div>
-                                    <h3 id="profile-name">John Doe</h3>
+                                    <h3 id="profile-name"></h3>
                                     <p style="color: var(--gray);">Customer since 2018</p>
                                 </div>
                                 <div>
                                     <div class="info-group">
                                         <div class="info-label">Email</div>
-                                        <div class="info-value" id="profile-email">john.doe@example.com</div>
+                                        <div class="info-value" id="profile-email"></div>
                                     </div>
                                 </div>
                             </div>
@@ -615,11 +632,11 @@
                         <div class="edit-form" id="profile-edit-form">
                             <div class="form-group">
                                 <label class="form-label">Username</label>
-                                <input type="text" class="form-control" id="edit-name" value="John Doe" aria-label="Username">
+                                <input type="text" class="form-control" id="edit-name" aria-label="Username">
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Email</label>
-                                <input type="email" class="form-control" id="edit-email" value="john.doe@example.com" aria-label="Email">
+                                <input type="email" class="form-control" id="edit-email" aria-label="Email">
                             </div>
                             <button class="btn btn-primary" id="save-profile-btn">Save Changes</button>
                             <button class="btn btn-outline" id="cancel-edit-btn">Cancel</button>
@@ -671,7 +688,7 @@
                                 </div>
                                 <div>
                                     <div style="font-weight: 600;">Email Support</div>
-                                    <div style="color: var(--gray);">support@cashview.com</div>
+                                    <div style="color: var(--gray);"><a href="mailto:support@cashview.com">support@cashview.com</a></div>
                                 </div>
                             </div>
                             <div style="display: flex; align-items: center; gap: 15px;">
@@ -700,10 +717,11 @@
             <div class="modal-body">
                 <div id="crypto-confirm-details">
                 </div>
-                <div class="form-group" id="crypto-2fa-group" style="display: none;">
+                <div class="form-group" id="crypto-2fa-group">
                     <label class="form-label">2FA Code</label>
                     <input type="text" class="form-control" id="crypto-2fa-code" placeholder="Enter 6-digit code from authenticator" aria-label="2FA Code">
                 </div>
+                <div class="loading-spinner" id="crypto-confirm-spinner"></div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-outline" id="cancel-crypto-confirm">Cancel</button>
