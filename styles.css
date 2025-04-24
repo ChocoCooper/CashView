@@ -1,3 +1,4 @@
+styles.css
 :root {
     --primary: #6c5ce7;
     --primary-dark: #5649c0;
@@ -21,6 +22,7 @@
     --doge-yellow: #c2a633;
     --xrp-blue: #27a2db;
     --usdt-green: #26a17b;
+    --bnb-yellow: #f3ba2f;
     --card-bg: #1e1e1e;
     --body-bg: #121212;
     --cashview-blue: #9fe8fc;
@@ -41,6 +43,15 @@ body {
     min-height: 100vh;
 }
 
+body.hide-sidebar-header header,
+body.hide-sidebar-header .sidebar {
+    display: none !important;
+}
+
+body.hide-sidebar-header .dashboard {
+    grid-template-columns: 1fr !important;
+}
+
 .container {
     max-width: 1400px;
     margin: 0 auto;
@@ -52,14 +63,11 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 0;
+    padding: 15px 25px;
     margin-bottom: 30px;
-    position: relative;
-    width: 100%;
     background-color: var(--card-bg);
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
-    padding: 15px 25px;
 }
 
 .logo {
@@ -114,7 +122,6 @@ header {
     color: var(--primary);
     cursor: pointer;
     z-index: 1001;
-    position: relative;
 }
 
 .menu-header {
@@ -136,6 +143,20 @@ header {
 
 .menu-title span {
     color: var(--cashview-blue);
+}
+
+.close-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 30px;
+    color: var(--primary);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.close-btn:hover {
+    color: var(--primary-dark);
 }
 
 .dashboard {
@@ -163,7 +184,37 @@ header {
     margin-bottom: 20px;
     border: 1px solid var(--gray-light);
     position: relative;
-    z-index: 1;
+}
+
+.crypto-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.crypto-action-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+.buy-btn {
+    background-color: rgba(0, 184, 148, 0.1);
+    color: var(--success);
+}
+
+.buy-btn:hover {
+    background-color: rgba(0, 184, 148, 0.2);
+}
+
+.sell-btn {
+    background-color: rgba(214, 48, 49, 0.1);
+    color: var(--danger);
+}
+
+.sell-btn:hover {
+    background-color: rgba(214, 48, 49, 0.2);
 }
 
 .balance-header {
@@ -187,6 +238,26 @@ header {
     transform: rotate(180deg);
 }
 
+.loading-spinner {
+    display: none;
+    border: 4px solid var(--gray-light);
+    border-top: 4px solid var(--primary);
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    animation: spin 1s linear infinite;
+    margin: 10px auto;
+}
+
+.loading-spinner.active {
+    display: block;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 .nav-menu {
     list-style: none;
     margin-top: 10px;
@@ -206,7 +277,6 @@ header {
     color: var(--white);
     font-weight: 500;
     transition: var(--transition);
-    position: relative;
 }
 
 .nav-link i {
@@ -490,6 +560,9 @@ header {
 .transaction-amount {
     font-weight: 600;
     font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
 .credit {
@@ -512,6 +585,10 @@ header {
     justify-content: center;
     align-items: center;
     backdrop-filter: blur(3px);
+}
+
+.modal.active {
+    display: flex;
 }
 
 .modal-content {
@@ -553,28 +630,6 @@ header {
 .modal-header h3 {
     font-size: 18px;
     color: var(--white);
-}
-
-.close-btn {
-    background: none;
-    border: none;
-    font-size: 20px;
-    color: var(--gray);
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-.close-btn:hover {
-    color: var(--white);
-}
-
-#close-sidebar {
-    color: var(--primary);
-    font-size: 30px;
-}
-
-#close-sidebar:hover {
-    color: var(--primary-dark);
 }
 
 .modal-body {
@@ -647,12 +702,18 @@ header {
     border: none;
 }
 
+.btn:disabled {
+    background-color: var(--gray-light);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
 .btn-primary {
     background-color: var(--primary);
     color: white;
 }
 
-.btn-primary:hover {
+.btn-primary:hover:not(:disabled) {
     background-color: var(--primary-dark);
 }
 
@@ -662,7 +723,7 @@ header {
     color: var(--white);
 }
 
-.btn-outline:hover {
+.btn-outline:hover:not(:disabled) {
     background-color: var(--gray-light);
 }
 
@@ -709,6 +770,10 @@ header {
     display: none;
 }
 
+.overlay.active {
+    display: block;
+}
+
 .crypto-card {
     background-color: var(--card-bg);
     border-radius: var(--border-radius);
@@ -745,8 +810,13 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
-    font-size: 16px;
+    overflow: hidden;
+}
+
+.crypto-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 .btc-icon {
@@ -769,10 +839,23 @@ header {
     background-color: var(--usdt-green);
 }
 
+.bnb-icon {
+    background-color: var(--bnb-yellow);
+}
+
 .crypto-price {
     font-weight: 700;
     font-size: 18px;
     color: var(--white);
+}
+
+.crypto-price.updated {
+    animation: priceUpdate 0.5s ease;
+}
+
+@keyframes priceUpdate {
+    0% { background-color: rgba(108, 92, 231, 0.2); }
+    100% { background-color: transparent; }
 }
 
 .crypto-change {
@@ -931,7 +1014,7 @@ header {
 
 .crypto-modal .modal-content {
     width: 600px;
-    max-height: 325px;
+    max-height: 90vh;
     overflow-y: auto;
     border-radius: 8px;
 }
@@ -1079,6 +1162,9 @@ header {
 .transaction-card-amount {
     font-weight: 600;
     font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Ensures spacing between crypto and fiat amounts */
 }
 
 .transaction-card-details {
@@ -1102,6 +1188,10 @@ header {
     max-width: 500px;
     margin: 0 auto;
     padding: 40px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
 }
 
 .auth-card {
@@ -1110,6 +1200,7 @@ header {
     box-shadow: var(--shadow);
     padding: 30px;
     border: 1px solid var(--gray-light);
+    width: 100%;
 }
 
 .auth-title {
@@ -1174,8 +1265,12 @@ header {
 
 .get-started-container {
     max-width: 600px;
-    margin: 100px auto;
-    text-align: center;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
 }
 
 .get-started-card {
@@ -1184,6 +1279,7 @@ header {
     box-shadow: var(--shadow);
     padding: 40px;
     border: 1px solid var(--gray-light);
+    width: 100%;
 }
 
 .get-started-title {
@@ -1227,17 +1323,11 @@ header {
     justify-content: center;
 }
 
-/* Hide header and sidebar on auth and get-started pages */
-.auth-page header,
-.auth-page .sidebar,
-.get-started-page header,
-.get-started-page .sidebar {
-    display: none;
-}
-
-.auth-page .dashboard,
-.get-started-page .dashboard {
-    grid-template-columns: 1fr;
+/* Show close button only in mobile view when sidebar is active */
+@media (min-width: 1201px) {
+    .close-btn {
+        display: none;
+    }
 }
 
 @media (max-width: 1200px) {
@@ -1278,6 +1368,10 @@ header {
         left: 0;
     }
 
+    .sidebar.active .close-btn {
+        display: block;
+    }
+
     .overlay.active {
         display: block;
     }
@@ -1298,7 +1392,14 @@ header {
         flex-direction: column;
     }
 
-    /* Ensure form inputs are readable on smaller screens */
+    .get-started-container {
+        padding: 15px;
+    }
+
+    .auth-container {
+        padding: 20px;
+    }
+
     .form-control {
         font-size: 16px;
         padding: 10px 12px;
@@ -1354,75 +1455,8 @@ header {
         font-size: 22px;
     }
 
-    /* Stack form inputs vertically */
-    .form-group {
-        width: 100%;
-    }
-}
-
-@media (max-width: 576px) {
-    .container {
+    .get-started-container {
         padding: 10px;
     }
 
-    .welcome-card h2 {
-        font-size: 20px;
-    }
-
-    .balance-amount {
-        font-size: 28px;
-    }
-
-    .transactions-table th {
-        padding: 8px 10px;
-        font-size: 13px;
-    }
-
-    .transaction-row td {
-        padding: 8px;
-    }
-
-    .filter-section {
-        flex-direction: column;
-    }
-
-    .filter-group {
-        min-width: 100%;
-    }
-    
-    .modal-content {
-        width: 100%;
-        max-width: 100%;
-        border-radius: 0;
-        height: 100vh;
-        max-height: 100vh;
-    }
-    
-    .modal-header, .modal-footer {
-        position: relative;
-    }
-
-    .crypto-actions {
-        grid-template-columns: 1fr;
-    }
-
-    .transaction-card {
-        min-width: 200px;
-    }
-
-    .get-started-container {
-        margin: 50px auto;
-        padding: 20px;
-    }
-
-    .get-started-title {
-        font-size: 20px;
-    }
-
-    /* Ensure buttons are full-width on small screens */
-    .btn {
-        width: 100%;
-        padding: 12px;
-        font-size: 16px;
-    }
 }
