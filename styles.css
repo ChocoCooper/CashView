@@ -59,20 +59,23 @@ body.hide-sidebar-header .dashboard {
 }
 
 header {
+    position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 15px 25px;
-    margin-bottom: 30px;
     background-color: var(--card-bg);
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
+    margin-bottom: 30px;
 }
 
 .logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     align-items: center;
-    cursor: pointer;
 }
 
 .logo img {
@@ -136,6 +139,7 @@ header {
 .menu-title {
     font-family: "Lexend", sans-serif;
     font-size: 30px;
+    margin-left: 40px;
     font-weight: 600;
     color: var(--white);
 }
