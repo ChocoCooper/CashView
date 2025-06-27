@@ -79,7 +79,7 @@ const transactionType = document.getElementById('transaction-type');
 const amountRange = document.getElementById('amount-range');
 
 let userData = {
-    balance: 700000,
+    balance: 624784,
     cryptoWallet: {
         BTC: { balance: 0.0425 },
         ETH: { balance: 1.25 },
